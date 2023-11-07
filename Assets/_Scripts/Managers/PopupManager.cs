@@ -45,5 +45,13 @@ namespace MatchThree
             }
             return popup;
         }
+
+        private void Start()
+        {
+            foreach (var popup in popups)
+            {
+                popup.Initialize(this);
+            }
+        }
     }
 }
