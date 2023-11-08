@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace MatchThree
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : Singleton<GameManager>
     {
-
+        public int currentPoint { get; private set; }
     }
 }
