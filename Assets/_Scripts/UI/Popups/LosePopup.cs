@@ -9,11 +9,16 @@ namespace MatchThree
 {
     public class LosePopup : PopupUI
     {
-        public StarIcon[] starIcons;
-        public TextMeshProUGUI scoreTxt;
-        public Button menuBtn;
-        public Button replayBtn;
-        public Button quitBtn;
+        [SerializeField]
+        private StarIcon[] starIcons;
+        [SerializeField]
+        private TextMeshProUGUI scoreTxt;
+        [SerializeField]
+        private Button menuBtn;
+        [SerializeField]
+        private Button replayBtn;
+        [SerializeField]
+        private Button quitBtn;
         public override void Initialize(PopupManager popupManager, Action onClosed = null)
         {
             base.Initialize(popupManager, onClosed);

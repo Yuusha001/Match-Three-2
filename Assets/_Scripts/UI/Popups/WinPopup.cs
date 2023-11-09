@@ -3,17 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine;
 using Utils;
 
 namespace MatchThree
 {
     public class WinPopups : PopupUI
     {
-        public StarIcon[] starIcons;
-        public TextMeshProUGUI scoreTxt;
-        public Button nextBtn;
-        public Button replayBtn;
-        public Button quitBtn;
+        [SerializeField]
+        private StarIcon[] starIcons;
+        [SerializeField]
+        private TextMeshProUGUI scoreTxt;
+        [SerializeField]
+        private Button nextBtn;
+        [SerializeField]
+        private Button replayBtn;
+        [SerializeField]
+        private Button quitBtn;
 
         public override void Initialize(PopupManager popupManager, Action onClosed = null)
         {

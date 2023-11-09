@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd114d8a32940d34ba04fb53214066bf, type: 3}
+  m_Name: Vocano
+  m_EditorClassIdentifier: 
+  decoSprites:
+  - {fileID: 21300000, guid: 6bd2db7a54d48ad499841c8bd165ca58, type: 3}
+  - {fileID: 21300000, guid: 45b36ec3cdce4f04b8c63e578400a927, type: 3}
+  groundSprites:
+  - {fileID: 21300000, guid: 28b862acb75f12e41ad3e2397c4fc772, type: 3}
+  - {fileID: 21300000, guid: 04b6266e2019af64dbe2ecf0d0e1a6e5, type: 3}
+  levelBtnPrefab: {fileID: 5076183656706309705, guid: c5963296eee24434a9b3d6e400157501, type: 3}
+  levelBtnPositions:
+  - {x: -15, y: -368, z: 0}
+  - {x: 131, y: -175, z: 0}
+  - {x: 28, y: 31, z: 0}
+  - {x: -30, y: 241, z: 0}
+  - {x: 127, y: 361, z: 0}
+  levelBtnPositions2:
+  - {x: -15, y: -332, z: 0}
+  - {x: -178, y: -164, z: 0}
+  - {x: -17, y: -4, z: 0}
+  - {x: 154, y: 141, z: 0}
+  - {x: 154, y: 354, z: 0}

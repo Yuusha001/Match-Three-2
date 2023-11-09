@@ -10,13 +10,21 @@ namespace MatchThree
 {
     public class SettingPopup : PopupUI
     {
-        public TextMeshProUGUI titleTxt;
-        public ToggleBtn musicBtn;
-        public ToggleBtn sfxBtn;
-        public Button replayBtn;
-        public Button quitBtn;
-        public Button closeBtn;
-        public Button creditBtn;
+
+        [SerializeField]
+        private TextMeshProUGUI titleTxt;
+        [SerializeField]
+        private ToggleBtn musicBtn;
+        [SerializeField]
+        private ToggleBtn sfxBtn;
+        [SerializeField]
+        private Button replayBtn;
+        [SerializeField]
+        private Button quitBtn;
+        [SerializeField]
+        private Button closeBtn;
+        [SerializeField]
+        private Button creditBtn;
         public override void Initialize(PopupManager popupManager, System.Action onClosed = null)
         {
             base.Initialize(popupManager, CloseHandler);
@@ -31,7 +39,7 @@ namespace MatchThree
 
         
 
-        public void Show(bool inGame)
+        public void Show(bool inGame = false)
         {
             titleTxt.text = inGame ? "Pause" : "Setting";
             Show();

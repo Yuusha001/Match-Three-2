@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 8189000448068141563}
   - component: {fileID: 6271444934723454308}
   m_Layer: 5
-  m_Name: MenuScreen
+  m_Name: HomeScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -230,6 +230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82f1e5f5a9084264684e5f3f07de0e98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playBtn: {fileID: 43612276147106226}
+  settingBtn: {fileID: 8717858541153046588}
 --- !u!1 &1726272750738540918
 GameObject:
   m_ObjectHideFlags: 0

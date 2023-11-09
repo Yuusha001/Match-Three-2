@@ -6,6 +6,6 @@ namespace MatchThree
 {
     public class DataManager : Singleton<DataManager>
     {
-
+        public Theme[] themes;
     }
 }
