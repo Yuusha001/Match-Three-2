@@ -27,6 +27,11 @@ namespace MatchThree
             replayBtn.onClick.AddListener(ReplayHander);
             quitBtn.onClick.AddListener(QuitHandler);
             nextBtn.onClick.AddListener(NextHandler);
+            var passedPoints = GameManager.Instance.currentLevelDifficulty.starsRequiredPoints;
+            for (int i = 0; i < starIcons.Length; i++)
+            {
+                starIcons[i].Initialize(passedPoints[i]);
+            }
         }
 
         public override void Show()
@@ -34,7 +39,7 @@ namespace MatchThree
             base.Show();
             foreach (var item in starIcons)
             {
-                item.Show(GameManager.Instance.currentPoint);
+                item.Show(GameManager.Instance.currentScore);
             }
         }
 

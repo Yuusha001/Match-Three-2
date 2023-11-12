@@ -1,56 +1,74 @@
 using NaughtyAttributes;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using Utils;
 
 namespace MatchThree
 {
     public class Board : MonoBehaviour
     {
+        [ReadOnly]
         public Tile tilePrefab;
+        [ReadOnly]
         public Row rowPrefab;
+        [ReadOnly]
         [SerializeField]
         private Transform holder;
-
+        [ReadOnly]
+        [SerializeField]
+        private CharacterGoal characterGoal;
+        [ReadOnly]
         public Row[] rows;
-        [SerializeField] private TileTypeAsset[] tileTypes;
+        [ReadOnly]
+        [SerializeField]
+        private TileTypeAsset[] tileTypes;
+        public void Initialize(LevelDifficulty levelDifficulty)
+        {
+            
+            SettupBoard(levelDifficulty);
+        }
 
-        [Button("Test")]
-        public void Initialize()
-        {   
-            if (rows.Length > 0)
+        private void SettupBoard(LevelDifficulty levelDifficulty)
+        {
+            //Clean
+            DeInitialize();
+
+            GameManager.OnMatch += MatchingHandler;
+            //Setup Board
+            tileTypes = levelDifficulty.tileTypes;
+            rows = new Row[levelDifficulty.numberOfRows];
+            for (int i = 0; i < levelDifficulty.numberOfCols; i++)
+            {
+                var row = Instantiate(rowPrefab, holder);
+                row.Initialize(this, levelDifficulty.numberOfCols, i, tileTypes);
+                rows[i] = row;
+            }
+            characterGoal.Initialize(levelDifficulty);
+        }
+
+        private void MatchingHandler(TileTypeAsset type, int count)
+        {
+            LogManager.Instance.Log($"Matched {count} x {type.name}.", this);
+            int score = type.value * count;
+            GameManager.AddScore(score);
+        }
+
+        [Button("Clear")]
+        public void DeInitialize()
+        {
+            if (rows != null && rows.Length > 0)
             {
                 for (int i = 0; i < rows.Length; i++)
                 {
                     Destroy(rows[i].gameObject);
                 }
             }
-
-            //Setup Board
-            rows = new Row[7];
-            for (int i = 0; i < 7; i++)
-            {
-                var row = Instantiate(rowPrefab, holder);
-                row.Initialize(this, 7,i,tileTypes);
-                rows[i] = row;
-            }
-           
-        }
-
-        [Button("Clear")]
-        public void Clear()
-        {
-            if (rows.Length > 0)
-            {
-                for (int i = 0; i < rows.Length; i++)
-                {
-                    DestroyImmediate(rows[i].gameObject);
-                }
-            }
             rows = null;
+            GameManager.OnMatch -= MatchingHandler;
+            characterGoal.DeInitialize();
         }
-
 
         public async void Select(Tile tile)
         {
