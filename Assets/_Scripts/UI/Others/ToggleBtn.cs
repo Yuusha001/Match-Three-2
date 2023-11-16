@@ -7,24 +7,25 @@ namespace MatchThree
 {
     public class ToggleBtn : MonoBehaviour
     {
-        protected bool _onEnable;
-        protected System.Action _onToggle;
+        protected bool onEnable;
+        protected System.Action onToggle;
         public RectTransform btnTranform;
         private Vector3 _onPosition = new Vector3(85,0,0);
         private Vector3 _offPosition = new Vector3(-85, 0, 0);
 
-        public virtual void Initialize(System.Action onToggle = null)
+        public virtual void Initialize(bool _onEnable, System.Action _onToggle = null)
         {
-            _onToggle = onToggle;
-            btnTranform.anchoredPosition = _onEnable ? _onPosition : _offPosition;
+            onToggle = _onToggle;
+            onEnable = _onEnable;
+            btnTranform.anchoredPosition = onEnable ? _onPosition : _offPosition;
             btnTranform.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(Toggle);
         }
         public virtual void Toggle()
         {
-            if (_onToggle != null)
-                _onToggle();
-            _onEnable = !_onEnable;
-            btnTranform.DOLocalMove(_onEnable ? _onPosition : _offPosition, 0.5f);
+            if (onToggle != null)
+                onToggle.Invoke();
+            onEnable = !onEnable;
+            btnTranform.DOLocalMove(onEnable ? _onPosition : _offPosition, 0.5f);
 
         }
     }

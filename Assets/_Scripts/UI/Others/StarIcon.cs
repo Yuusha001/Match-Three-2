@@ -15,6 +15,7 @@ namespace MatchThree
         {
             point = requiredPoint;
             isShow = false;
+            starVisual.localScale = Vector3.zero;
         }
 
 

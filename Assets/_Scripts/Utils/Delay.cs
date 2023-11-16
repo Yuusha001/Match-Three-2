@@ -18,7 +18,7 @@ namespace Utils
                 action();
         }
 
-        public static async UniTask DoAction(System.Action action, int delay)
+        public static async UniTask DoAction(System.Action action, float delay)
         {
             await UniTask.WaitForSeconds(delay);
             if (action != null)

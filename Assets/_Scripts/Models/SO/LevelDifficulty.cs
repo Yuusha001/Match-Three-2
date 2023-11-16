@@ -23,7 +23,13 @@ namespace MatchThree
 
         [HorizontalLine(color: EColor.Green)]
         [ShowIf("gameType", EGameType.Collect)]
-        public CollectType[] collectTypes; 
+        public CollectType[] collectTypes;
+
+        [Button("Get All Tiles")]
+        private void GetAllTiles()
+        {
+            tileTypes = Resources.LoadAll<TileTypeAsset>("_SO/TileTypes");
+        }
     }
 
     [System.Serializable]

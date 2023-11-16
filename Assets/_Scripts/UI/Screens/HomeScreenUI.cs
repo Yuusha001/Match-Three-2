@@ -19,13 +19,15 @@ namespace MatchThree
 
         private void SettingHandler()
         {
-            PopupManager.Instance.GetPopup<SettingPopup>().Show(true);
+            PopupManager.Instance.GetPopup<SettingPopup>().Show();
         }
 
         private void PlayHandler()
         {
             Deactive();
-            UIManager.Instance.ActiveScreen<MenuScreenUI>();
+            //UIManager.Instance.ActiveScreen<MenuScreenUI>();
+            UIManager.Instance.ActiveScreen<IngameScreenUI>();
+            LevelManager.Instance.LoadLevel(0);
         }
     }
 }

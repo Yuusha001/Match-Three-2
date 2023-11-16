@@ -46,6 +46,7 @@ namespace MatchThree
             _board = board;
             x = _x;
             y = _y;
+            this.GetComponent<Image>().sprite = DataManager.Instance.boardSprites[(x + y) % 2 == 0 ? 0 : 1];
             button.onClick.AddListener(()=>action());
             Type = tileTypes[Random.Range(0, tileTypes.Length)];
             action?.Invoke();

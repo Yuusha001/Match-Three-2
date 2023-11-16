@@ -1,5 +1,4 @@
 using NaughtyAttributes;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -51,8 +50,7 @@ namespace MatchThree
         private void MatchingHandler(TileTypeAsset type, int count)
         {
             LogManager.Instance.Log($"Matched {count} x {type.name}.", this);
-            int score = type.value * count;
-            GameManager.AddScore(score);
+            GameManager.Matching(type,count);
         }
 
         [Button("Clear")]
@@ -72,7 +70,7 @@ namespace MatchThree
 
         public async void Select(Tile tile)
         {
-            Debug.Log(tile.x + " " + tile.y);
+            //Debug.Log(tile.x + " " + tile.y);
             /*if (_isSwapping || _isMatching || _isShuffling) return;
 
             if (!_selection.Contains(tile))

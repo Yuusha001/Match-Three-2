@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ namespace MatchThree
 {
     public class UIManager : Singleton<UIManager>
     {
+        [ReadOnly]
         public ScreenUI[] screens;
         public T GetScreen<T>()
         {
@@ -54,5 +56,19 @@ namespace MatchThree
             return screen;
         }
 
+        private void Start()
+        {
+            foreach (var screen in screens)
+            {
+                screen.Initialize(this);
+            }
+        }
+
+
+        [Button("Get All Screen")]
+        private void GetAllScreens()
+        {
+            screens = FindObjectsOfType<ScreenUI>(true);
+        }
     }
 }

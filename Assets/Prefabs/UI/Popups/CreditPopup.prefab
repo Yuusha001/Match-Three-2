@@ -144,7 +144,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Thank you for playing \nmy Game\n\n\n Art and Design by SimasArt"
+  m_text: "Thank you for playing \nmy Game\n\nCode by Yuusha001\nArt and Design by
+    SimasArt, Craftpix.net"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 914bdd14ee6179647977adb5ac747cf3, type: 2}
   m_sharedMaterial: {fileID: -5263338218149616523, guid: 914bdd14ee6179647977adb5ac747cf3, type: 2}
@@ -957,6 +958,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9203585448162942115}
+  - component: {fileID: 6273909732491151786}
   m_Layer: 5
   m_Name: CreditPopup
   m_TagString: Untagged
@@ -985,6 +987,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6273909732491151786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7894985214040576591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 609ff21cd0173b94ba57fe569b417105, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8001122852891571620
 GameObject:
   m_ObjectHideFlags: 0

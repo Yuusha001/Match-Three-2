@@ -25,22 +25,27 @@ namespace MatchThree
         {
             base.Initialize(uiManager);
             settingBtn.onClick.AddListener(SettingHandler);
+        }
+
+        public void StartGame()
+        {
+            EndGame();
+            moveTxt.text = GameManager.Instance.currentValidMove.ToString();
+            scoreTxt.text = GameManager.Instance.currentScore.ToString();
             boardGame.Initialize(GameManager.Instance.currentLevelDifficulty);
             scoreBar.Initialize(GameManager.Instance.currentLevelDifficulty);
             GameManager.OnAddScore += AddScoreHandler;
             GameManager.OnValidMove += ValidMoveHandler;
         }
 
-        public override void Active()
-        {
-            base.Active();
-            moveTxt.text = GameManager.Instance.currentValidMove.ToString();
-            scoreTxt.text = GameManager.Instance.currentScore.ToString();
-        }
-
         public override void Deactive()
         {
             base.Deactive();
+            EndGame();
+        }
+
+        public void EndGame()
+        {
             moveTxt.text = "";
             scoreTxt.text = "";
             GameManager.OnAddScore -= AddScoreHandler;

@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using UnityEngine;
 
 namespace MatchThree
@@ -46,15 +47,26 @@ namespace MatchThree
                 default:
                     break;
             }
+            GameManager.OnMatch += MachingHandler;
         }
 
         [Button("Clear")]
         public void DeInitialize()
         {
+            GameManager.OnMatch -= MachingHandler;
+
             for (int i = container.childCount - 1; i >= 0; i--)
             {
-               Destroy(container.GetChild(i).gameObject);
+                Destroy(container.GetChild(i).gameObject);
             }
+
         }
+
+        private void MachingHandler(TileTypeAsset asset, int arg2)
+        {
+           
+        }
+
+        
     }
 }

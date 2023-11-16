@@ -6,7 +6,9 @@ namespace MatchThree
 {
     public class DataManager : Singleton<DataManager>
     {
+        public Sprite[] boardSprites;
         public Theme[] themes;
 
+        
     }
 }

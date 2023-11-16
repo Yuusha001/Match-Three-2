@@ -27,6 +27,11 @@ namespace MatchThree
             replayBtn.onClick.AddListener(ReplayHander);
             quitBtn.onClick.AddListener(QuitHandler);
             nextBtn.onClick.AddListener(NextHandler);
+            
+        }
+
+        public void StartGame()
+        {
             var passedPoints = GameManager.Instance.currentLevelDifficulty.starsRequiredPoints;
             for (int i = 0; i < starIcons.Length; i++)
             {

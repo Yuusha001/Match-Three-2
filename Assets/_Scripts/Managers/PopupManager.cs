@@ -1,11 +1,14 @@
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Device;
 
 namespace MatchThree
 {
     public class PopupManager : Singleton<PopupManager>
     {
+        [ReadOnly]
         public PopupUI[] popups;
         public T GetPopup<T>()
         {
@@ -44,6 +47,12 @@ namespace MatchThree
                 }
             }
             return popup;
+        }
+
+        [Button("Get All Popups")]
+        private void GetAllPopups()
+        {
+            popups = FindObjectsOfType<PopupUI>(true);
         }
 
         private void Start()

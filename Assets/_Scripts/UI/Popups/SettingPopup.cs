@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Utils;
-using System;
 
 namespace MatchThree
 {
@@ -28,8 +25,8 @@ namespace MatchThree
         public override void Initialize(PopupManager popupManager, System.Action onClosed = null)
         {
             base.Initialize(popupManager, CloseHandler);
-            musicBtn.Initialize(MusicHandler);
-            sfxBtn.Initialize(SFXHandler);
+            musicBtn.Initialize(AudioManager.MusicSetting == 1,MusicHandler);
+            sfxBtn.Initialize(AudioManager.SoundSetting == 1, SFXHandler);
             replayBtn.onClick.AddListener(ReplayHander);
             quitBtn.onClick.AddListener(QuitHandler);
             closeBtn.onClick.AddListener(Close);
@@ -41,8 +38,11 @@ namespace MatchThree
 
         public void Show(bool inGame = false)
         {
+            base.Show();
             titleTxt.text = inGame ? "Pause" : "Setting";
-            Show();
+            quitBtn.gameObject.SetActive(inGame);
+            replayBtn.gameObject.SetActive(inGame);
+            creditBtn.gameObject.SetActive(!inGame);
         }
 
         private void CloseHandler()
@@ -54,6 +54,7 @@ namespace MatchThree
         {
             if (musicBtn == null) return;
             LogManager.Instance.Log("Music Toggle",this);
+            AudioManager.MusicSetting = AudioManager.MusicSetting == 1 ? 0 : 1;
 
         }
 
@@ -61,7 +62,7 @@ namespace MatchThree
         {
             if (sfxBtn == null) return;
             LogManager.Instance.Log("SFX Toggle",this);
-
+            AudioManager.SoundSetting = AudioManager.SoundSetting == 1 ? 0 : 1;
         }
 
         private void ReplayHander()
@@ -77,7 +78,7 @@ namespace MatchThree
 
         private void CreditHandler()
         {
-            throw new NotImplementedException();
+            _popupManager.ShowPopup<CreditPopup>();
         }
     }
 }
