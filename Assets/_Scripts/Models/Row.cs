@@ -12,7 +12,7 @@ namespace MatchThree
             {
                 tiles[y] = Instantiate(board.tilePrefab, this.transform);
                 tiles[y].name = $"[{x},{y}]";
-                tiles[y].Initialize(board, () => board.Select(tiles[y]), x, y, tileTypes);
+                tiles[y].Initialize(board, x, y, tileTypes);
             }
         }
     }

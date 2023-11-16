@@ -1,6 +1,7 @@
-using System;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
+using System.Threading;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -9,11 +10,8 @@ namespace MatchThree
 {
     public sealed class Tile : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        [SerializeField]
-        private Image icon;
-        [SerializeField]
-        private Button button;
-        private Board _board; 
+        public Image icon;
+        private Board _board;
         public int x { get; private set; }
         public int y { get; private set; }
         public TileData Data => new TileData(x, y, _type.id);
@@ -32,6 +30,8 @@ namespace MatchThree
             }
         }
 
+        
+
         [Header("Swipe")]
         [SerializeField]
         private float swipeAngle = 0;
@@ -41,56 +41,65 @@ namespace MatchThree
         private Vector2 firstTouchPosition;
         [SerializeField]
         private Vector2 finalTouchPosition;
-        public void Initialize(Board board, Action action, int _x, int _y, TileTypeAsset[] tileTypes)
+        public void Initialize(Board board, int _x, int _y, TileTypeAsset[] tileTypes)
         {
             _board = board;
             x = _x;
             y = _y;
             this.GetComponent<Image>().sprite = DataManager.Instance.boardSprites[(x + y) % 2 == 0 ? 0 : 1];
-            button.onClick.AddListener(()=>action());
             Type = tileTypes[Random.Range(0, tileTypes.Length)];
-            action?.Invoke();
         }
-
         private void CalculateAngle()
         {
+            if (Vector2.Distance(finalTouchPosition,firstTouchPosition) == 0)
+            {
+                _board.Select(this);
+                return;
+            }
             if (Mathf.Abs(finalTouchPosition.y - firstTouchPosition.y) > swipeResist || Mathf.Abs(finalTouchPosition.x - firstTouchPosition.x) > swipeResist)
             {
                 swipeAngle = Mathf.Atan2(finalTouchPosition.y - firstTouchPosition.y, finalTouchPosition.x - firstTouchPosition.x) * 180 / Mathf.PI;
                 if (swipeAngle > -45 && swipeAngle <= 45 && x < _board.rows[y].tiles.Length - 1)
                 {
                     //Right Swipe
-                    Debug.Log($"[{x},{y}] Right");
-                    //_board.Select2(this, _board.GetTile(x + 1, y));
+                    _board.Swipe(this, SwipeDir.Right);
 
                 }
                 else if (swipeAngle > 45 && swipeAngle <= 135 && y < _board.rows.Length - 1)
                 {
                     //Up Swipe
-                    Debug.Log($"[{x},{y}] Up");
-                    //board.Select2(this, board.GetTile(x, y - 1));
+                    _board.Swipe(this, SwipeDir.Up);
 
                 }
                 else if ((swipeAngle > 135 || swipeAngle <= -135) && x > 0)
                 {
                     //Left Swipe
-                    Debug.Log($"[{x},{y}] Left");
-                    //board.Select2(this, board.GetTile(x - 1, y));
+                    _board.Swipe(this, SwipeDir.Left);
 
                 }
                 else if (swipeAngle < -45 && swipeAngle >= -135 && y > 0)
                 {
                     //Down Swipe
-                    Debug.Log($"[{x},{y}] Down");
-                    //board.Select2(this, board.GetTile(x, y + 1));
+                    _board.Swipe(this, SwipeDir.Down);
 
                 }
             }
         }
 
+        public Tween deflate( float tweenDuration)
+        {
+           return icon.transform.DOScale(Vector3.zero, tweenDuration).SetEase(Ease.InBack);
+        }
+
+        public Tween inflate( float tweenDuration)
+        {
+            return icon.transform.DOScale(Vector3.one, tweenDuration).SetEase(Ease.OutBack);
+        }
+
         public void OnPointerDown(PointerEventData eventData)
         {
             firstTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            finalTouchPosition = Vector2.zero;
         }
 
         public void OnPointerUp(PointerEventData eventData)
@@ -98,5 +107,10 @@ namespace MatchThree
             finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             CalculateAngle();
         }
+    }
+
+    public enum SwipeDir
+    {
+        Left,Right,Up,Down
     }
 }
