@@ -1,15 +1,20 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using NaughtyAttributes;
 using UnityEngine;
 
 namespace MatchThree
 {
     public class StarIcon : MonoBehaviour
     {
+        [ReadOnly]
         [SerializeField]
         private Transform starVisual;
-
+        [ReadOnly]
         [SerializeField]
         private int point;
+        [ReadOnly]
+        [SerializeField]
         private bool isShow;
         public void Initialize(int requiredPoint)
         {
@@ -21,10 +26,12 @@ namespace MatchThree
 
         public void Show(int currentPoint)
         {
-            if(currentPoint>point && !isShow)
+            if (currentPoint>point && !isShow)
             {
-                isShow = true;
-                starVisual.DOScale(Vector3.one, 0.4f);
+                starVisual.DOScale(Vector3.one, 0.5f).OnComplete(() =>
+                {
+                     isShow = true;
+                });
             }
         }
 

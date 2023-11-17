@@ -766,8 +766,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 116
-  m_fontSizeBase: 116
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -782,7 +782,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -1164,7 +1164,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3694214315628791077}
-  - {fileID: 1190853080108699970}
+  - {fileID: 5504680278516052926}
   m_Father: {fileID: 5878058322521839357}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1196,9 +1196,14 @@ MonoBehaviour:
   tilePrefab: {fileID: 7989233546113405477, guid: d8371c0bfc37b4b43b29acba1e59b813, type: 3}
   rowPrefab: {fileID: 2245647077200003110, guid: ebad85661e6cddb4592a3ce1b6ad006d, type: 3}
   holder: {fileID: 3694214315628791077}
-  characterGoal: {fileID: 1811317007255646696}
+  characterGoal: {fileID: 5026395578575852308}
   rows: []
   tileTypes: []
+  swappingOverlay: {fileID: 2021331212742962061}
+  tweenDuration: 0.25
+  isSwapping: 0
+  isMatching: 0
+  isShuffling: 0
 --- !u!114 &7397663861375325926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1621,12 +1626,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1a5ec4221ccb3649937e6f944e552d4, type: 3}
---- !u!224 &1190853080108699970 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8739967853796306889, guid: e1a5ec4221ccb3649937e6f944e552d4, type: 3}
-  m_PrefabInstance: {fileID: 3832026689858215031}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1811317007255646696 stripped
+--- !u!114 &5026395578575852308 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8137810863954005859, guid: e1a5ec4221ccb3649937e6f944e552d4, type: 3}
   m_PrefabInstance: {fileID: 3832026689858215031}
@@ -1637,6 +1637,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ee6041b7b2e1448a0c98bd5cf400f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &5504680278516052926 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8739967853796306889, guid: e1a5ec4221ccb3649937e6f944e552d4, type: 3}
+  m_PrefabInstance: {fileID: 3832026689858215031}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4640496915314195131
 PrefabInstance:
   m_ObjectHideFlags: 0

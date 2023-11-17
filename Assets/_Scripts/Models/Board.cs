@@ -4,7 +4,6 @@ using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using UnityEngine;
 using Utils;
@@ -45,13 +44,12 @@ namespace MatchThree
         [ReadOnly]
         [SerializeField]
         private bool isShuffling;
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly List<Tile> _selection = new List<Tile>();
         private TileData[,] Matrix
         {
             get
             {
-                var width = rows.Max(row => row.tiles.Length);
+                var width =  rows[0].tiles.Length;
                 var height = rows.Length;
 
                 var data = new TileData[width, height];
@@ -98,7 +96,6 @@ namespace MatchThree
             //Clean
             DeInitialize();
 
-            GameManager.OnMatch += MatchingHandler;
             //Setup Board
             tileTypes = levelDifficulty.tileTypes;
             rows = new Row[levelDifficulty.numberOfRows];
@@ -108,13 +105,8 @@ namespace MatchThree
                 row.Initialize(this, levelDifficulty.numberOfCols, i, tileTypes);
                 rows[i] = row;
             }
+            swappingOverlay.SetAsLastSibling();
             characterGoal.Initialize(levelDifficulty);
-        }
-
-        private void MatchingHandler(TileTypeAsset type, int count)
-        {
-            LogManager.Instance.Log($"Matched {count} x {type.name}.", this);
-            GameManager.Matching(type,count);
         }
 
         [Button("Clear")]
@@ -128,7 +120,6 @@ namespace MatchThree
                 }
             }
             rows = null;
-            GameManager.OnMatch -= MatchingHandler;
             characterGoal.DeInitialize();
         }
 
@@ -155,7 +146,6 @@ namespace MatchThree
 
         public async void Select(Tile tile)
         {
-            Debug.Log(tile.x + " " + tile.y);
             if (isSwapping || isMatching || isShuffling) return;
 
             if (!_selection.Contains(tile))
@@ -180,7 +170,7 @@ namespace MatchThree
         private async UniTask MoveAsync(Tile tile1, Tile tile2)
         {
             await SwapAsync(tile1, tile2);
-            GameManager.ValidMoving();
+            
             if (!await MatchAsync())
             {
                 await SwapAsync(tile1, tile2);
@@ -223,41 +213,11 @@ namespace MatchThree
             return Sequence;
         }
 
-        private async UniTask<bool> MatchAsync()
-        {
-            var didMatch = false;
-
-            isMatching = true;
-
-            var match = TileDataMatrixUtility.FindBestMatch(Matrix);
-
-            while (match != null)
-            {
-                didMatch = true;
-
-                var tiles = GetTiles(match.Tiles);
-
-                await DeflateSequence(tiles).Play().ToUniTask();
-
-                AudioManager.Instance.sfx.PlayOneShot(AudioManager.Instance.matchSound);
-
-                await InflateSequence(tiles).Play().ToUniTask();
-
-                GameManager.Matching(Array.Find(tileTypes, tileType => tileType.id == match.TypeId), match.Tiles.Length);
-
-                match = TileDataMatrixUtility.FindBestMatch(Matrix);
-            }
-
-            isMatching = false;
-
-            return didMatch;
-        }
-
         private Sequence SwapSequence(Transform icon1Transform, Transform icon2Transform)
         {
             var Sequence = DOTween.Sequence();
-            Sequence.Join(icon1Transform.DOMove(icon2Transform.position, tweenDuration).SetEase(Ease.OutBack));
-            Sequence.Join(icon2Transform.DOMove(icon1Transform.position, tweenDuration).SetEase(Ease.OutBack));
+            Sequence.Join(icon1Transform.DOMove(icon2Transform.position, 0.35f).SetEase(Ease.OutBack));
+            Sequence.Join(icon2Transform.DOMove(icon1Transform.position, 0.35f).SetEase(Ease.OutBack));
             return Sequence;
         }
 
@@ -277,7 +237,7 @@ namespace MatchThree
             icon1Transform.SetAsLastSibling();
             icon2Transform.SetAsLastSibling();
 
-            await SwapSequence(icon1Transform, icon2Transform).Play().ToUniTask();
+            await SwapSequence(icon1Transform, icon2Transform).Play().AsyncWaitForCompletion().AsUniTask();
 
             icon1Transform.SetParent(tile2.transform);
             icon2Transform.SetParent(tile1.transform);
@@ -292,6 +252,39 @@ namespace MatchThree
             tile2.Type = tile1Item;
 
             isSwapping = false;
+        }
+
+        private async UniTask<bool> MatchAsync()
+        {
+            var didMatch = false;
+
+            isMatching = true;
+
+            var match = TileDataMatrixUtility.FindBestMatch(Matrix);
+            if (match != null)
+            {
+                GameManager.ValidMoving();
+            }
+            while (match != null)
+            {
+                didMatch = true;
+
+                var tiles = GetTiles(match.Tiles);
+
+                await DeflateSequence(tiles).Play().AsyncWaitForCompletion().AsUniTask();
+
+                AudioManager.Instance.sfx.PlayOneShot(AudioManager.Instance.matchSound);
+
+                await InflateSequence(tiles).Play().AsyncWaitForCompletion().AsUniTask();
+
+                GameManager.Matching(Array.Find(tileTypes, tileType => tileType.id == match.TypeId), match.Tiles.Length);
+
+                match = TileDataMatrixUtility.FindBestMatch(Matrix);
+            }
+
+            isMatching = false;
+            GameManager.Instance.CheckingWinCondition();
+            return didMatch;
         }
 
         private void Shuffle()

@@ -106,6 +106,7 @@ namespace MatchThree
         {
             finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             CalculateAngle();
+            firstTouchPosition = finalTouchPosition = Vector2.zero;
         }
     }
 

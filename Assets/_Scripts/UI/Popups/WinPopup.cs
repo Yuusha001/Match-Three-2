@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
 using Utils;
+using System.Threading.Tasks;
 
 namespace MatchThree
 {
@@ -39,13 +40,19 @@ namespace MatchThree
             }
         }
 
+        public async void EndGameAsync(int currentScore)
+        {
+            scoreTxt.text = currentScore.ToString();
+            for (int i = 0; i < starIcons.Length; i++)
+            {
+                await Delay.DoAction(() => starIcons[i].Show(currentScore), 0.35f * i);
+            }
+        }
+
         public override void Show()
         {
             base.Show();
-            foreach (var item in starIcons)
-            {
-                item.Show(GameManager.Instance.currentScore);
-            }
+            EndGameAsync(GameManager.Instance.currentScore);
         }
 
         private void NextHandler()

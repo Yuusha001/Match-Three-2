@@ -40,12 +40,12 @@ namespace MatchThree
             OnValidMove?.Invoke();
         }
 
-        public async static void Matching(TileTypeAsset tileType, int count)
+        public static void Matching(TileTypeAsset tileType, int count)
         {
+            Debug.Log("Matching");
             int score = tileType.value * count;
             Instance.CheckingCollected(tileType, count);
             Instance.AddScore(score);
-            Instance.CheckingWinCondition();
             OnMatch?.Invoke(tileType, count);
         }
 
@@ -72,14 +72,13 @@ namespace MatchThree
             } 
         }
 
-        private void CheckingWinCondition()
+        public void CheckingWinCondition()
         {
-            
             var starsRequiredPoints = Instance.currentLevelDifficulty.starsRequiredPoints;
             switch (Instance.currentLevelDifficulty.gameType)
             {
                 case EGameType.None:
-                    if (currentScore > starsRequiredPoints[starsRequiredPoints.Length - 1] )
+                    if (currentScore >= starsRequiredPoints[starsRequiredPoints.Length - 1] )
                     {
                         PopupManager.Instance.ShowPopup<WinPopups>();
                         return;
