@@ -21,7 +21,7 @@ namespace MatchThree
         }
         private void Start()
         {
-            PlayMusic( 1, true, songs[songs.Length - 1]);
+            PlayMusic(1, true, songs[songs.Length - 1]);
         }
 
         public AudioSource music;
@@ -39,7 +39,7 @@ namespace MatchThree
             }, delay);
         }
 
-        public void PlayMusic( float volume, bool isLoop, AudioClip audio = null)
+        public void PlayMusic(float volume, bool isLoop, AudioClip audio = null)
         {
             if (MusicSetting != 1)
             {
@@ -52,6 +52,18 @@ namespace MatchThree
             source.loop = isLoop;
             source.volume = volume;
             source.Play();
+        }
+
+        public void MusicHandler()
+        {
+            MusicSetting = MusicSetting == 1 ? 0 : 1;
+            music.volume = MusicSetting;
+        }
+
+        public void SFXHandler()
+        {
+            SoundSetting = SoundSetting == 1 ? 0 : 1;
+            sfx.volume = SoundSetting;
         }
     }
 }

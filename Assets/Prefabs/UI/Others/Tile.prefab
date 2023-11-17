@@ -168,6 +168,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 3743470677504493532}
   swipeAngle: 0
-  swipeResist: 1
+  swipeResist: 0.1
   firstTouchPosition: {x: 0, y: 0}
   finalTouchPosition: {x: 0, y: 0}

@@ -54,15 +54,14 @@ namespace MatchThree
         {
             if (musicBtn == null) return;
             LogManager.Instance.Log("Music Toggle",this);
-            AudioManager.MusicSetting = AudioManager.MusicSetting == 1 ? 0 : 1;
-
+            AudioManager.Instance.MusicHandler();
         }
 
         private void SFXHandler()
         {
             if (sfxBtn == null) return;
             LogManager.Instance.Log("SFX Toggle",this);
-            AudioManager.SoundSetting = AudioManager.SoundSetting == 1 ? 0 : 1;
+            AudioManager.Instance.SFXHandler();
         }
 
         private void ReplayHander()

@@ -1,7 +1,5 @@
-using Cysharp.Threading.Tasks;
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace MatchThree
@@ -13,6 +11,7 @@ namespace MatchThree
         public int currentScore { get; private set; }
         public int currentValidMove { get; private set; }
         public LevelDifficulty currentLevelDifficulty { get; private set; }
+        public CollectType[] collects { get; private set; }
         public static event Action<int> OnAddScore;
         public static event Action OnValidMove;
         public static event Action<TileTypeAsset, int> OnMatch;
@@ -23,6 +22,18 @@ namespace MatchThree
             currentScore = 0;
             currentLevelDifficulty = levelDifficulty;
             currentValidMove = levelDifficulty.numberOfMoves;
+            switch (levelDifficulty.gameType)
+            {
+                case EGameType.Collect:
+                    collects = new CollectType[levelDifficulty.collectTypes.Length];
+                    for (int i = 0; i < collects.Length; i++)
+                    {
+                        collects[i] = levelDifficulty.collectTypes[i];
+                    }
+                    break;
+                default:
+                    break;
+            }
             AudioManager.Instance.PlayMusic(1, true);
             UIManager.Instance.GetScreen<IngameScreenUI>().StartGame();
         }
@@ -50,22 +61,16 @@ namespace MatchThree
 
         private bool CollectCompleted(CollectType[] types)
         {
-            var sum = 0;
-            foreach (var item in types)
-            {
-                sum += item.numberOfCollects;
-            }
-            return sum == 0;
+            return types.All(element => element.numberOfCollects <= 0);
         }
 
         private void CheckingCollected(TileTypeAsset tileType, int count)
         {   
-            var collectTypes = Instance.currentLevelDifficulty.collectTypes;
-            for (int i = 0; i < collectTypes.Length; i++)
+            for (int i = 0; i < collects.Length; i++)
             {
-                if (collectTypes[i].tileType == tileType)
+                if (collects[i].tileType == tileType)
                 {
-                    collectTypes[i].numberOfCollects -= count;
+                    collects[i].numberOfCollects -= count;
                     break;
                 }
             } 
@@ -89,8 +94,7 @@ namespace MatchThree
                     }
                     break;  
                 case EGameType.Collect:
-                    var collectTypes = Instance.currentLevelDifficulty.collectTypes;
-                    if (CollectCompleted(collectTypes))
+                    if (CollectCompleted(collects))
                     {
                         if (currentScore > starsRequiredPoints[starsRequiredPoints.Length - 1] || currentValidMove == 0)
                         {

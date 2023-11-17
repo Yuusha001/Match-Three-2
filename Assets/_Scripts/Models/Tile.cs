@@ -65,7 +65,7 @@ namespace MatchThree
                     _board.Swipe(this, SwipeDir.Right);
 
                 }
-                else if (swipeAngle > 45 && swipeAngle <= 135 && y < _board.rows.Length - 1)
+                else if (swipeAngle > 45 && swipeAngle <= 135 && y > 0)
                 {
                     //Up Swipe
                     _board.Swipe(this, SwipeDir.Up);
@@ -77,7 +77,7 @@ namespace MatchThree
                     _board.Swipe(this, SwipeDir.Left);
 
                 }
-                else if (swipeAngle < -45 && swipeAngle >= -135 && y > 0)
+                else if (swipeAngle < -45 && swipeAngle >= -135 && y < _board.rows.Length-1)
                 {
                     //Down Swipe
                     _board.Swipe(this, SwipeDir.Down);
@@ -106,7 +106,7 @@ namespace MatchThree
         {
             finalTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             CalculateAngle();
-            firstTouchPosition = finalTouchPosition = Vector2.zero;
+            //firstTouchPosition = finalTouchPosition = Vector2.zero;
         }
     }
 

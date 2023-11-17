@@ -1,5 +1,5 @@
 using NaughtyAttributes;
-using System;
+using System.Linq;
 using UnityEngine;
 
 namespace MatchThree
@@ -15,6 +15,7 @@ namespace MatchThree
         [ReadOnly]
         [SerializeField]
         private Transform container;
+        private FruitGoal[] fruitGoals;
 
         public void Initialize(LevelDifficulty levelDifficulty)
         {
@@ -26,15 +27,16 @@ namespace MatchThree
                     Instantiate(textGoalPrefab, container).text = starsRequiredPoints[starsRequiredPoints.Length-1].ToString();
                     break;
                 case EGameType.Collect:
-                    if (collectTypes.Length == 1)
+                    fruitGoals = new FruitGoal[levelDifficulty.collectTypes.Length];
+                    for (int i = 0; i < fruitGoals.Length; i++)
                     {
-                        Instantiate(fruitGoalPrefab, container).Initialize(collectTypes[0]);
+                        fruitGoals[i] = Instantiate(fruitGoalPrefab, container);
+                        fruitGoals[i].Initialize(collectTypes[i]);
                     }
                     if (collectTypes.Length == 2)
                     {
-                        Instantiate(fruitGoalPrefab, container).Initialize(collectTypes[0]);
                         Instantiate(textGoalPrefab, container).text = "+";
-                        Instantiate(fruitGoalPrefab, container).Initialize(collectTypes[1]);
+                        fruitGoals[fruitGoals.Length - 1].transform.SetAsLastSibling();
                     }
                     /*if (collectTypes.Length == 3)
                     {
@@ -64,9 +66,12 @@ namespace MatchThree
 
         private void MachingHandler(TileTypeAsset asset, int arg2)
         {
-           
+            var collect = GameManager.Instance.collects.FirstOrDefault(Item => Item.tileType == asset);
+            var own = fruitGoals.FirstOrDefault(Item => Item.fruitID == asset.id);
+            if (own != null)
+            {
+                own.Collect(collect.numberOfCollects);
+            }
         }
-
-        
     }
 }

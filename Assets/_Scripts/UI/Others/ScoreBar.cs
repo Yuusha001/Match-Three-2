@@ -27,11 +27,21 @@ namespace MatchThree
         private void AddScoreHandler(int obj)
         {
             var currentScore = GameManager.Instance.currentScore;
-            scoreSlider.value = currentScore > levelPassedScore ? 1 : currentScore / levelPassedScore;
+            
             foreach (var item in starIcons)
             {
                 item.Show(currentScore);
             }
+        }
+        public void Update()
+        {
+            var currentScore = GameManager.Instance.currentScore;
+            float target = (currentScore > levelPassedScore) ? 1 : (float)currentScore / levelPassedScore;
+            if(scoreSlider.value <= target)
+            {
+                scoreSlider.value += Time.deltaTime * 0.35f;
+            }
+            
         }
 
         public void DeInitialize()

@@ -6,6 +6,7 @@ using UnityEngine;
 namespace MatchThree
 {
     [CreateAssetMenu(menuName = "Match Three/Level Difficulty")]
+    [System.Serializable]
     public class LevelDifficulty : ScriptableObject
     {
         [Header("Level Difficulty")]
