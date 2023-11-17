@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
 using Utils;
-using System.Threading.Tasks;
 
 namespace MatchThree
 {

@@ -5,14 +5,14 @@ namespace MatchThree
     public sealed class Row : MonoBehaviour
     {
         public Tile[] tiles;
-        public void Initialize(Board board, int numberOfTiles, int x, TileTypeAsset[] tileTypes)
+        public void Initialize(Board board, int numberOfTiles, int y, TileTypeAsset[] tileTypes)
         {
             tiles = new Tile[numberOfTiles];
-            for (int y = 0; y < numberOfTiles; y++)
+            for (int x = 0; x < numberOfTiles; x++)
             {
-                tiles[y] = Instantiate(board.tilePrefab, this.transform);
-                tiles[y].name = $"[{x},{y}]";
-                tiles[y].Initialize(board, x, y, tileTypes);
+                tiles[x] = Instantiate(board.tilePrefab, this.transform);
+                tiles[x].name = $"[{x},{y}]";
+                tiles[x].Initialize(board, x, y, tileTypes);
             }
         }
     }

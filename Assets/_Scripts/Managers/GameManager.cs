@@ -42,7 +42,6 @@ namespace MatchThree
 
         public static void Matching(TileTypeAsset tileType, int count)
         {
-            Debug.Log("Matching");
             int score = tileType.value * count;
             Instance.CheckingCollected(tileType, count);
             Instance.AddScore(score);

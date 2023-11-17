@@ -4,6 +4,7 @@ using NaughtyAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using Utils;
@@ -49,7 +50,7 @@ namespace MatchThree
         {
             get
             {
-                var width =  rows[0].tiles.Length;
+                var width = rows.Max(row => row.tiles.Length);
                 var height = rows.Length;
 
                 var data = new TileData[width, height];
@@ -186,17 +187,17 @@ namespace MatchThree
         }
 
 
-        private Sequence DeflateSequence(Tile[] tiles)
+        private UniTask DeflateSequence(Tile[] tiles)
         {
             var Sequence = DOTween.Sequence();
             for (int i = 0; i < tiles.Length; i++)
             {
                 Sequence.Join(tiles[i].deflate(tweenDuration));
             }
-            return Sequence;
+            return Sequence.Play().AsyncWaitForCompletion().AsUniTask();
         }
 
-        private Sequence InflateSequence(Tile[] tiles)
+        private UniTask InflateSequence(Tile[] tiles)
         {
             var Sequence = DOTween.Sequence();
             for (int i = 0; i < tiles.Length; i++)
@@ -210,15 +211,15 @@ namespace MatchThree
                 }
                 Sequence.Join(tiles[i].inflate(tweenDuration));
             }
-            return Sequence;
+            return Sequence.Play().AsyncWaitForCompletion().AsUniTask();
         }
 
-        private Sequence SwapSequence(Transform icon1Transform, Transform icon2Transform)
+        private UniTask SwapSequence(Transform icon1Transform, Transform icon2Transform)
         {
             var Sequence = DOTween.Sequence();
             Sequence.Join(icon1Transform.DOMove(icon2Transform.position, 0.35f).SetEase(Ease.OutBack));
             Sequence.Join(icon2Transform.DOMove(icon1Transform.position, 0.35f).SetEase(Ease.OutBack));
-            return Sequence;
+            return Sequence.Play().AsyncWaitForCompletion().AsUniTask();
         }
 
         private async UniTask SwapAsync(Tile tile1, Tile tile2)
@@ -237,7 +238,7 @@ namespace MatchThree
             icon1Transform.SetAsLastSibling();
             icon2Transform.SetAsLastSibling();
 
-            await SwapSequence(icon1Transform, icon2Transform).Play().AsyncWaitForCompletion().AsUniTask();
+            await UniTask.WhenAll(SwapSequence(icon1Transform, icon2Transform));
 
             icon1Transform.SetParent(tile2.transform);
             icon2Transform.SetParent(tile1.transform);
@@ -271,13 +272,14 @@ namespace MatchThree
 
                 var tiles = GetTiles(match.Tiles);
 
-                await DeflateSequence(tiles).Play().AsyncWaitForCompletion().AsUniTask();
+                await UniTask.WhenAll(DeflateSequence(tiles));
 
                 AudioManager.Instance.sfx.PlayOneShot(AudioManager.Instance.matchSound);
-
-                await InflateSequence(tiles).Play().AsyncWaitForCompletion().AsUniTask();
-
+                
                 GameManager.Matching(Array.Find(tileTypes, tileType => tileType.id == match.TypeId), match.Tiles.Length);
+
+                await UniTask.WhenAll(InflateSequence(tiles));
+
 
                 match = TileDataMatrixUtility.FindBestMatch(Matrix);
             }
