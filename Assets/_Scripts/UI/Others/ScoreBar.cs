@@ -21,27 +21,20 @@ namespace MatchThree
                 starIcons[i].Initialize(passedPoints[i]);
             }
             levelPassedScore = passedPoints[passedPoints.Length - 1];
+            scoreSlider.value = 0;
             GameManager.OnAddScore += AddScoreHandler;
         }
 
         private void AddScoreHandler(int obj)
         {
-            var currentScore = GameManager.Instance.currentScore;
-            
+            var currentScore = GameManager.Instance.currentScore;   
             foreach (var item in starIcons)
             {
                 item.Show(currentScore);
             }
-        }
-        public void Update()
-        {
-            var currentScore = GameManager.Instance.currentScore;
-            float target = (currentScore > levelPassedScore) ? 1 : (float)currentScore / levelPassedScore;
-            if(scoreSlider.value <= target)
-            {
-                scoreSlider.value += Time.deltaTime * 0.35f;
-            }
-            
+            var targetValue = currentScore > levelPassedScore ? 1 : (float)currentScore / levelPassedScore;
+            scoreSlider.value = targetValue;
+
         }
 
         public void DeInitialize()

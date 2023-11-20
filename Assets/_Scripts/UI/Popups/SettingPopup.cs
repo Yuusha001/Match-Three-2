@@ -67,12 +67,15 @@ namespace MatchThree
         private void ReplayHander()
         {
             LogManager.Instance.Log("Replay Handler",this);
+            Close();
+            GameManager.Instance.ReloadLevel();
         }
 
         private void QuitHandler()
         {
             LogManager.Instance.Log("Quit Handler", this);
-
+            Close();
+            GameManager.Instance.QuitGame();
         }
 
         private void CreditHandler()

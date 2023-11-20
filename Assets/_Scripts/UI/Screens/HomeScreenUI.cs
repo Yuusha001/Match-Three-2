@@ -25,9 +25,7 @@ namespace MatchThree
         private void PlayHandler()
         {
             Deactive();
-            //UIManager.Instance.ActiveScreen<MenuScreenUI>();
-            UIManager.Instance.ActiveScreen<IngameScreenUI>();
-            LevelManager.Instance.LoadLevel(0);
+            UIManager.Instance.ActiveScreen<MenuScreenUI>();
         }
     }
 }

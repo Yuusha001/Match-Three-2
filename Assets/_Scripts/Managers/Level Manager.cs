@@ -1,5 +1,4 @@
 using NaughtyAttributes;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,19 +9,48 @@ namespace MatchThree
     {
         [ReadOnly]
         [SerializeField]
-        private List<LevelDifficulty> _levels;
+        private List<LevelDifficulty> levels;
+        [ReadOnly]
+        [SerializeField]
+        private int currentLevel;
 
         [Button("Load All Levels")]
         private void LoadLevels()
         {
-            _levels.Clear();
-            _levels = Resources.LoadAll<LevelDifficulty>("_SO/LevelDifficulties").ToList<LevelDifficulty>();
+            levels.Clear();
+            levels = Resources.LoadAll<LevelDifficulty>("_SO/LevelDifficulties").ToList<LevelDifficulty>();
         }
 
-        public void LoadLevel(int curentLevel)
+        private void Start()
         {
-            if (curentLevel > _levels.Count || curentLevel < 0) return;
-            GameManager.Instance.StartGame(_levels[curentLevel]);
+            DataManager.Instance.userData.LoadData(levels.Count);
+        }
+
+        public void LoadLevel(int _currentLevel)
+        {
+            if (_currentLevel > levels.Count || _currentLevel < 0) return;
+            GameManager.Instance.StartGame(levels[_currentLevel]);
+            currentLevel = _currentLevel;
+        }
+
+        public void ReloadLevel()
+        {
+            LoadLevel(currentLevel);
+        }
+
+        public void SaveLevelData()
+        {
+            var LV = DataManager.Instance.userData.userLevelDatas.Find(c => c.id == currentLevel);
+            var score = GameManager.Instance.currentScore;
+            var starObtained = GameManager.Instance.StarObtained();
+            LV.Save(starObtained, score);
+            DataManager.Instance.userData.SaveUserData();
+        }
+        public void UnlockNextLV()
+        {
+            var LV = DataManager.Instance.userData.userLevelDatas.Find(c => c.id == currentLevel+1);
+            LV.Unlock();
+            DataManager.Instance.userData.SaveUserData();
         }
     }
 }

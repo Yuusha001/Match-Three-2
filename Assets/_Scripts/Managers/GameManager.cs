@@ -1,25 +1,36 @@
 using System;
 using System.Linq;
-using UnityEngine;
 
 namespace MatchThree
 {
     public class GameManager : Singleton<GameManager>
     {
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)] 
-        private static void Initialize() => Application.targetFrameRate = 60;
         public int currentScore { get; private set; }
         public int currentValidMove { get; private set; }
         public LevelDifficulty currentLevelDifficulty { get; private set; }
         public CollectType[] collects { get; private set; }
+        public static event Action<TileTypeAsset, int> OnMatch;
         public static event Action<int> OnAddScore;
         public static event Action OnValidMove;
-        public static event Action<TileTypeAsset, int> OnMatch;
+        public static event Action OnStartGame;
+        public static event Action OnQuitGame;
 
+        public int StarObtained()
+        {
+            int numberOfStars = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                if (currentScore > currentLevelDifficulty.starsRequiredPoints[i])
+                {
+                    numberOfStars++;
+                }
+            }
+            return numberOfStars;
+        }
 
         public void StartGame(LevelDifficulty levelDifficulty)
         {
-            currentScore = 0;
+            Reset();
             currentLevelDifficulty = levelDifficulty;
             currentValidMove = levelDifficulty.numberOfMoves;
             switch (levelDifficulty.gameType)
@@ -34,10 +45,29 @@ namespace MatchThree
                 default:
                     break;
             }
+            OnStartGame?.Invoke();
             AudioManager.Instance.PlayMusic(1, true);
-            UIManager.Instance.GetScreen<IngameScreenUI>().StartGame();
         }
 
+        public void Reset()
+        {
+            currentScore = 0;
+            currentLevelDifficulty = null;
+            currentValidMove = 0;
+            collects = null;
+        }
+
+        public void ReloadLevel()
+        {
+            Reset();
+            LevelManager.Instance.ReloadLevel();
+        }
+
+        public void QuitGame()
+        {
+            Reset();
+            OnQuitGame?.Invoke();
+        }
 
         private void AddScore(int score)
         {
@@ -76,6 +106,20 @@ namespace MatchThree
             } 
         }
 
+        private void EndGame(bool isWin)
+        {
+            LevelManager.Instance.SaveLevelData();
+            if (isWin)
+            {
+                PopupManager.Instance.ShowPopup<WinPopups>();
+                LevelManager.Instance.UnlockNextLV();
+            }
+            else
+            {
+                PopupManager.Instance.ShowPopup<LosePopup>();
+            }
+        }
+
         public void CheckingWinCondition()
         {
             var starsRequiredPoints = Instance.currentLevelDifficulty.starsRequiredPoints;
@@ -84,12 +128,12 @@ namespace MatchThree
                 case EGameType.None:
                     if (currentScore >= starsRequiredPoints[starsRequiredPoints.Length - 1] )
                     {
-                        PopupManager.Instance.ShowPopup<WinPopups>();
+                        EndGame(true);
                         return;
                     }
                     if (currentValidMove == 0)
                     {
-                        PopupManager.Instance.ShowPopup<LosePopup>();
+                        EndGame(false);
                         return;
                     }
                     break;  
@@ -98,13 +142,13 @@ namespace MatchThree
                     {
                         if (currentScore > starsRequiredPoints[starsRequiredPoints.Length - 1] || currentValidMove == 0)
                         {
-                            PopupManager.Instance.ShowPopup<WinPopups>();
+                            EndGame(true);
                         }
                         return;
                     }
                     if (currentValidMove == 0)
                     {
-                        PopupManager.Instance.ShowPopup<LosePopup>();
+                        EndGame(false);
                         return;
                     }
                     break;

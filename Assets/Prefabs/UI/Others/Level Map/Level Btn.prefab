@@ -922,4 +922,5 @@ MonoBehaviour:
   - {fileID: 7530153379624851872}
   starsContainer: {fileID: 6525623763148967837}
   levelTxt: {fileID: 2437013944446053771}
-  unlockedColor: {r: 0.95686275, g: 0.8862745, b: 0.7372549, a: 0}
+  unlockedColor: {r: 0.95686275, g: 0.8862745, b: 0.7372549, a: 1}
+  levelBtn: {fileID: 34150278749160539}

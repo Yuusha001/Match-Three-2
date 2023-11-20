@@ -1,37 +1,57 @@
-using TMPro;
+using NaughtyAttributes;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace MatchThree
 {
     public class LevelBtn : MonoBehaviour
     {
+        [ReadOnly]
         [SerializeField]
         private Transform[] starVisuals;
+        [ReadOnly]
         [SerializeField]
         private Transform starsContainer;
+        [ReadOnly]
         [SerializeField]
-        private TextMeshProUGUI levelTxt;
+        private TMPro.TextMeshProUGUI levelTxt;
+        [ReadOnly]
         [SerializeField]
         private Color unlockedColor;
-
-        public void Initialize(Level level, UnityAction action)
+        [ReadOnly]
+        [SerializeField]
+        private Button levelBtn;
+        private int ID;
+        public void Initialize(UserLevelData levelData)
         {
-            this.GetComponent<Button>().onClick.AddListener(action);
-            Settup(level);
+            ID = levelData.id;
+            levelBtn.onClick.AddListener(LevelBtnHandler);
+            Settup(levelData);
 
         }
-        public void Settup(Level level)
+
+        private void LevelBtnHandler()
         {
-            this.GetComponent<Image>().color = level.unlocked ? unlockedColor: Color.white;
-            levelTxt.text = level.level.ToString();
-            starsContainer.gameObject.SetActive(level.unlocked);
-            if (level.unlocked)
+            if (levelBtn == null) return;
+            LevelManager.Instance.LoadLevel(ID);
+        }
+
+        public void Settup(UserLevelData levelData)
+        {
+            this.GetComponent<Image>().color = levelData.unlocked ? unlockedColor: Color.white;
+            levelTxt.text = levelData.id.ToString();
+            Unlock();
+        }
+        public void Unlock()
+        {
+            UserLevelData levelData = DataManager.Instance.userData.GetUserLevelData(this.ID);
+            starsContainer.gameObject.SetActive(levelData.unlocked);
+            levelBtn.interactable = levelData.unlocked;
+            if (levelData.unlocked)
             {
                 for (int i = 0; i < starVisuals.Length; i++)
                 {
-                    starVisuals[i].gameObject.SetActive(i < level.numberOfStars);
+                    starVisuals[i].gameObject.SetActive(i < levelData.numberOfStars);
                 }
             }
         }

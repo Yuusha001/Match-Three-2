@@ -30,8 +30,6 @@ namespace MatchThree
             }
         }
 
-        
-
         [Header("Swipe")]
         [SerializeField]
         private float swipeAngle = 0;

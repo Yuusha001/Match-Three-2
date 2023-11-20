@@ -3,29 +3,31 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine;
 using Utils;
+using NaughtyAttributes;
 
 namespace MatchThree
 {
     public class WinPopups : PopupUI
     {
+        [ReadOnly]
         [SerializeField]
         private StarIcon[] starIcons;
+        [ReadOnly]
         [SerializeField]
         private TextMeshProUGUI scoreTxt;
+        [ReadOnly]
         [SerializeField]
         private Button nextBtn;
+        [ReadOnly]
         [SerializeField]
         private Button replayBtn;
-        [SerializeField]
-        private Button quitBtn;
 
         public override void Initialize(PopupManager popupManager, Action onClosed = null)
         {
             base.Initialize(popupManager, onClosed);
             replayBtn.onClick.AddListener(ReplayHander);
-            quitBtn.onClick.AddListener(QuitHandler);
             nextBtn.onClick.AddListener(NextHandler);
-            
+            GameManager.OnStartGame += StartGame;
         }
 
         public void StartGame()
@@ -54,20 +56,19 @@ namespace MatchThree
 
         private void NextHandler()
         {
-            LogManager.Instance.Log("Next Handler", this);
-
-        }
-
-        private void QuitHandler()
-        {
-            LogManager.Instance.Log("Quit Handler", this);
-
+            Close();
+            GameManager.Instance.QuitGame();
         }
 
         private void ReplayHander()
         {
-            LogManager.Instance.Log("Replay Handler", this);
+            Close();
+            GameManager.Instance.ReloadLevel();
+        }
 
+        private void OnDestroy()
+        {
+            GameManager.OnStartGame -= StartGame;
         }
     }
 }

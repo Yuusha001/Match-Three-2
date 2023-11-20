@@ -25,10 +25,13 @@ namespace MatchThree
         {
             base.Initialize(uiManager);
             settingBtn.onClick.AddListener(SettingHandler);
+            GameManager.OnStartGame += StartGame;
+            GameManager.OnQuitGame += Deactive;
         }
 
         public void StartGame()
         {
+            Active();
             EndGame();
             moveTxt.text = GameManager.Instance.currentValidMove.ToString();
             scoreTxt.text = GameManager.Instance.currentScore.ToString();
@@ -67,6 +70,12 @@ namespace MatchThree
         private void SettingHandler()
         {
             PopupManager.Instance.GetPopup<SettingPopup>().Show(true);
+        }
+
+        private void OnDestroy()
+        {
+            GameManager.OnStartGame -= StartGame;
+            GameManager.OnQuitGame -= Deactive;
         }
     }
 }

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0ab3156411ae094fa0a50c6232bd87d, type: 3}
+  m_Name: Level 2
+  m_EditorClassIdentifier: 
+  numberOfRows: 7
+  numberOfCols: 7
+  numberOfMoves: 7
+  starsRequiredPoints: e8030000b0040000dc050000
+  tileTypes:
+  - {fileID: 11400000, guid: fe8374eb2e9f97743af019cfc2b7337b, type: 2}
+  - {fileID: 11400000, guid: b0d34ff7f81cc1f48969354365498457, type: 2}
+  - {fileID: 11400000, guid: e195a6cd91a395e4a9ce91751c1c5d21, type: 2}
+  - {fileID: 11400000, guid: d12396dec9b4fd145a16b66e760d4271, type: 2}
+  - {fileID: 11400000, guid: 36ed0a09c1029be428d5921ebc2ef23d, type: 2}
+  gameType: 1
+  collectTypes:
+  - numberOfCollects: 6
+    tileType: {fileID: 11400000, guid: 36ed0a09c1029be428d5921ebc2ef23d, type: 2}
+  - numberOfCollects: 6
+    tileType: {fileID: 11400000, guid: e195a6cd91a395e4a9ce91751c1c5d21, type: 2}
