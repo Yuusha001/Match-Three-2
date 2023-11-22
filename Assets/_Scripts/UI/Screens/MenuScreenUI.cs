@@ -8,14 +8,19 @@ namespace MatchThree
     {
         [ReadOnly]
         [SerializeField]
+        private TopBar topBar;
+        [ReadOnly]
+        [SerializeField]
         private UnityEngine.UI.Button settingBtn;
         [ReadOnly]
         public LevelNode levelNodePrefab;
         [ReadOnly]
         [SerializeField]
         private Transform levelHolder;
+        [ReadOnly]
         [SerializeField]
         private List<LevelNode> levelNodes = new List<LevelNode>();
+        
         public override void Initialize(UIManager uiManager)
         {
             base.Initialize(uiManager);
@@ -32,11 +37,11 @@ namespace MatchThree
             for (int i = 0; i < userData.TotalLevels(); i++)
             {
                 datas.Add(userData.userLevelDatas[i]);
-                if (i > 0 && (i + 1) % 5 == 0)
+                if (i > 0 && (i + 1) % 8 == 0)
                 {
                     var node = Instantiate(levelNodePrefab, levelHolder);
                     node.transform.SetAsFirstSibling();
-                    node.Initialize(datas, DataManager.Instance.themes[0]);
+                    node.Initialize(datas, DataManager.Instance.themes[Random.Range(0,3)]);
                     levelNodes.Add(node);
                     datas.Clear();
                 }

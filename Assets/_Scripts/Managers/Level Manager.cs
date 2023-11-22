@@ -48,8 +48,10 @@ namespace MatchThree
         }
         public void UnlockNextLV()
         {
-            var LV = DataManager.Instance.userData.userLevelDatas.Find(c => c.id == currentLevel+1);
-            LV.Unlock();
+            var currentLV = DataManager.Instance.userData.GetUserLevelData(currentLevel);
+            var nextLV = DataManager.Instance.userData.GetUserLevelData(currentLevel+1);
+            currentLV.PlayedLevel();
+            nextLV.UnlockLevel();
             DataManager.Instance.userData.SaveUserData();
         }
     }

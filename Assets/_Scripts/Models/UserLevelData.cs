@@ -4,14 +4,14 @@ namespace MatchThree
     public class UserLevelData
     {
         public int id;
-        public bool unlocked;
+        public ELevelState levelState;
         public int numberOfStars = 0;
         public int highScore;
 
         public UserLevelData(int _level)
         {
             this.id = _level;
-            this.unlocked = false;
+            this.levelState = 0;
             this.numberOfStars = 0;
             this.highScore = 0;
         }
@@ -22,9 +22,29 @@ namespace MatchThree
             this.highScore = highScore;
         }
 
-        public void Unlock()
+        public bool isUnlocked()
         {
-            this.unlocked = true;
+            return this.levelState != ELevelState.Locked;
         }
+
+        public bool isPlayed()
+        {
+            return this.levelState == ELevelState.Played;
+        }
+
+        public void UnlockLevel()
+        {
+            this.levelState = ELevelState.Unlocked;
+        }
+
+        public void PlayedLevel()
+        {
+            this.levelState = ELevelState.Played;
+        }
+    }
+
+    public enum ELevelState
+    {
+        Locked = 0, Unlocked = 1, Played = 2
     }
 }

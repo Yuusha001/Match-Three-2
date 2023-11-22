@@ -16,7 +16,7 @@ namespace MatchThree
                 UserLevelData data = new UserLevelData(i);
                 if (i == 0)
                 {
-                    data.unlocked = true;
+                    data.UnlockLevel();
                 }
                 userLevelDatas.Add(data);
             }

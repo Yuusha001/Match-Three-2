@@ -1,5 +1,4 @@
 using NaughtyAttributes;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,18 +7,19 @@ namespace MatchThree
     [CreateAssetMenu(menuName = "Match Three/Theme Asset")]
     public class Theme : ScriptableObject
     {
-        [Header("Sprites")]
         [ReadOnly]
-        public Sprite[] decoSprites;
-        [ReadOnly]
-        public Sprite[] groundSprites;
-
-        [Header("Position")]
+        public int ID;
         [ReadOnly]
         public LevelBtn levelBtnPrefab;
         [ReadOnly]
-        public List<Vector3> levelBtnPositions;
+        public Sprite levelGround;
         [ReadOnly]
-        public List<Vector3> levelBtnPositions2;
+        public List<Vector3> btnPositions;
+        [ReadOnly]
+        public Sprite lockBtn;
+        [ReadOnly]
+        public Sprite unlockBtn;
+        [ReadOnly]
+        public Sprite playedBtn;
     }
 }
