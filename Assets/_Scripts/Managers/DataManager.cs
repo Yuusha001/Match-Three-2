@@ -10,6 +10,14 @@ namespace MatchThree
     {
         [ReadOnly]
         public Sprite[] boardSprites;
+        [ReadOnly]
+        public Sprite[] borderSprites;
+        [ReadOnly]
+        public Sprite[] blockSprites;
+        [ReadOnly]
+        public Sprite[] rockSprites;
+        [ReadOnly]
+        public Sprite iceSprites;
         [ReadOnly] 
         public Theme[] themes;
         [ReadOnly]
@@ -20,10 +28,10 @@ namespace MatchThree
             set { PlayerPrefs.SetInt("coin", value); }
         }
 
-        public static int Diamond
+        public static int Life
         {
-            get { return PlayerPrefs.GetInt("diamond"); }
-            set { PlayerPrefs.SetInt("diamond", value); }
+            get { return PlayerPrefs.GetInt("life"); }
+            set { PlayerPrefs.SetInt("life", value); }
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]

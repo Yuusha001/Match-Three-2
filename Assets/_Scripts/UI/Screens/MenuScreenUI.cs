@@ -15,6 +15,8 @@ namespace MatchThree
         [ReadOnly]
         public LevelNode levelNodePrefab;
         [ReadOnly]
+        public Transform endNodePrefab;
+        [ReadOnly]
         [SerializeField]
         private Transform levelHolder;
         [ReadOnly]
@@ -46,6 +48,8 @@ namespace MatchThree
                     datas.Clear();
                 }
             }
+            var endNode = Instantiate(endNodePrefab, levelHolder);
+            endNode.SetAsFirstSibling();
         }
 
         public override void Active()

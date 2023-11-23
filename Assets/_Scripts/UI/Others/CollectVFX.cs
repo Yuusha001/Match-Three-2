@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,10 +8,27 @@ namespace MatchThree
 {
     public class CollectVFX : MonoBehaviour
     {
-        public float range;
-        public float moveTime;
-        public float delayTime;
+        public int range = 150;
+        public float moveTime = 0.5f;
+        public float delayTime = 0.3f;
         public Transform endPos;
+        public Sprite icon;
+
+        [Button("Replace")]
+        private void ReplaceIcon()
+        {
+            this.name = icon.name + " VFX";
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).GetComponent<Image>().sprite = icon;
+            }
+        }
+
+        [Button("Test")]
+        private void Test()
+        {
+            PlayFx(null);
+        }
         public async void PlayFx(System.Action callBack)
         {
             /*if (GameManager.GameState == GameState.PLAYING) return;*/
@@ -32,8 +50,8 @@ namespace MatchThree
             {
                 Transform curChild = transform.GetChild(i);
                 curChild.gameObject.SetActive(true);
-                float ranNumX = Random.Range(-range, range);
-                float ranNumY = Random.Range(-range, range);
+                int ranNumX = Random.Range(-range, range);
+                int ranNumY = Random.Range(-range, range);
                 curChild.localPosition = new Vector3(ranNumX, ranNumY);
                 curChild.localScale = Vector3.zero;
                 tasks[i] = curChild.DOScale(1, moveTime).SetEase(Ease.OutElastic).SetDelay(Random.Range(0, 0.3f)).OnComplete(() =>

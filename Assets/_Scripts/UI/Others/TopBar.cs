@@ -1,6 +1,5 @@
 using NaughtyAttributes;
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace MatchThree
@@ -9,10 +8,13 @@ namespace MatchThree
     {
         [ReadOnly]
         [SerializeField]
-        private TMPro.TextMeshProUGUI coinTxt;
+        private TextMeshProUGUI coinTxt;
         [ReadOnly]
         [SerializeField]
-        private TMPro.TextMeshProUGUI diamondTxt;
+        private TextMeshProUGUI diamondTxt;
+        [ReadOnly]
+        [SerializeField]
+        private TextMeshProUGUI lifeTxt;
         [ReadOnly]
         [SerializeField]
         private ParticleSystem coinVFX;
@@ -23,12 +25,9 @@ namespace MatchThree
         public CollectVFX coinUI_VFX;
         [ReadOnly]
         public CollectVFX diamondUI_VFX;
-
-
-
         public void Initialize()
         {
-            diamondTxt.text = DataManager.Diamond.ToString();
+            lifeTxt.text = DataManager.Life.ToString();
             coinTxt.text = DataManager.Coin.ToString();
         }
     }
