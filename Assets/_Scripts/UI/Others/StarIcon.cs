@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using NaughtyAttributes;
 using UnityEngine;
@@ -10,12 +9,15 @@ namespace MatchThree
         [ReadOnly]
         [SerializeField]
         private Transform starVisual;
+        [SerializeField]
+        private Animator shineAnimator;
         [ReadOnly]
         [SerializeField]
         private int point;
         [ReadOnly]
         [SerializeField]
         private bool isShow;
+        
         public void Initialize(int requiredPoint)
         {
             point = requiredPoint;
@@ -31,6 +33,7 @@ namespace MatchThree
                 starVisual.DOScale(Vector3.one, 0.5f).OnComplete(() =>
                 {
                      isShow = true;
+                    shineAnimator.Play("Star Shine");
                 });
             }
         }

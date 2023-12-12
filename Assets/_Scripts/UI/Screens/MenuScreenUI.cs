@@ -7,8 +7,7 @@ namespace MatchThree
     public class MenuScreenUI : ScreenUI
     {
         [ReadOnly]
-        [SerializeField]
-        private TopBar topBar;
+        public TopBar topBar;
         [ReadOnly]
         [SerializeField]
         private UnityEngine.UI.Button settingBtn;
@@ -26,6 +25,7 @@ namespace MatchThree
         public override void Initialize(UIManager uiManager)
         {
             base.Initialize(uiManager);
+            topBar.Initialize();
             settingBtn.onClick.AddListener(SettingHandler);
             GameManager.OnStartGame += Deactive;
             GameManager.OnQuitGame += Active;

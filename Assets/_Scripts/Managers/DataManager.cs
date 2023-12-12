@@ -24,13 +24,19 @@ namespace MatchThree
         public UserData userData;
         public static int Coin
         {
-            get { return PlayerPrefs.GetInt("coin"); }
+            get { return PlayerPrefs.GetInt("coin",0); }
             set { PlayerPrefs.SetInt("coin", value); }
+        }
+
+        public static int Diamond
+        {
+            get { return PlayerPrefs.GetInt("diamond",0); }
+            set { PlayerPrefs.SetInt("diamond", value); }
         }
 
         public static int Life
         {
-            get { return PlayerPrefs.GetInt("life"); }
+            get { return PlayerPrefs.GetInt("life",0); }
             set { PlayerPrefs.SetInt("life", value); }
         }
 

@@ -63,10 +63,14 @@ namespace MatchThree
             LevelManager.Instance.ReloadLevel();
         }
 
-        public void QuitGame()
+        public void QuitGame(Action action = null)
         {
             Reset();
             OnQuitGame?.Invoke();
+            if (action != null)
+            {
+                action?.Invoke();
+            }
         }
 
         private void AddScore(int score)

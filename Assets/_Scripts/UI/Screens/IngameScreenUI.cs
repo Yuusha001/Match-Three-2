@@ -43,8 +43,8 @@ namespace MatchThree
 
         public override void Deactive()
         {
-            base.Deactive();
             EndGame();
+            base.Deactive();
         }
 
         public void EndGame()

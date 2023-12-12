@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MatchThree
 {
-    public class TopBar : MonoBehaviour
+    public class TopBar : Singleton<TopBar>
     {
         [ReadOnly]
         [SerializeField]
@@ -27,8 +27,29 @@ namespace MatchThree
         public CollectVFX diamondUI_VFX;
         public void Initialize()
         {
-            lifeTxt.text = DataManager.Life.ToString();
+            lifeTxt.text = $"{DataManager.Life}/5";
+            diamondTxt.text = DataManager.Diamond.ToString();
             coinTxt.text = DataManager.Coin.ToString();
+        }
+
+        public void AddCoin(int coin)
+        {
+            DataManager.Coin += coin;
+            coinUI_VFX.PlayFx(() => {
+                coinVFX.Play();
+                coinTxt.text = DataManager.Coin.ToString();
+            });
+           
+        }
+
+        public void AddDiamond(int diamond)
+        {
+            DataManager.Diamond += diamond;
+            diamondUI_VFX.PlayFx(() => { 
+                diamondVFX.Play();
+                diamondTxt.text = DataManager.Diamond.ToString();
+            });
+            
         }
     }
 }

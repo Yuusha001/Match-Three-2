@@ -9,11 +9,8 @@ namespace MatchThree
     [System.Serializable]
     public class LevelDifficulty : ScriptableObject
     {
-        [Header("Level Difficulty")]
-        [Range(6,8)]
-        public int numberOfRows = 6;
-        [Range(6, 8)]
-        public int numberOfCols = 6;
+        public MapData mapData;
+
         [HorizontalLine(color: EColor.Red)]
         [Space]
         [Header("Level Design")]
@@ -31,7 +28,28 @@ namespace MatchThree
         {
             tileTypes = Resources.LoadAll<TileTypeAsset>("_SO/TileTypes");
         }
+        private void OnValidate()
+        {
+            mapData.InitializeMapData();
+        }
     }
+
+    [System.Serializable]
+    public class MapData
+    {
+        [Header("Level Difficulty")]
+        [Range(6, 8)]
+        public int numberOfRows = 6;
+        [Range(6, 8)]
+        public int numberOfCols = 6;
+        public EMapType[,] Data;
+        public void InitializeMapData()
+        {
+            Data = new EMapType[numberOfRows, numberOfCols];
+        }
+        
+    }
+
 
     [System.Serializable]
     public struct CollectType
@@ -43,7 +61,11 @@ namespace MatchThree
 
     public enum EGameType
     {
-        None,Collect
+        None = 0,Collect = 1
+    }
+    public enum EMapType
+    {
+        Normal = 0, Empty = 1, Block_1 = 2, Block_2 = 3, Rock_1 = 4, Rock_2= 5, Frozen = 6
     }
 }
 

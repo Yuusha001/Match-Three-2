@@ -21,6 +21,8 @@ namespace MatchThree
         [ReadOnly]
         [SerializeField]
         private Button replayBtn;
+        [SerializeField]
+        private ParticleSystem winEff;
 
         public override void Initialize(PopupManager popupManager, Action onClosed = null)
         {
@@ -41,6 +43,7 @@ namespace MatchThree
 
         public async void EndGameAsync(int currentScore)
         {
+            winEff.Play();
             scoreTxt.text = currentScore.ToString();
             for (int i = 0; i < starIcons.Length; i++)
             {
@@ -57,7 +60,10 @@ namespace MatchThree
         private void NextHandler()
         {
             Close();
-            GameManager.Instance.QuitGame();
+            GameManager.Instance.QuitGame(() =>
+            {
+                TopBar.Instance.AddCoin(500);
+            });
         }
 
         private void ReplayHander()
