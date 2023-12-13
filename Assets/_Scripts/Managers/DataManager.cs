@@ -1,7 +1,4 @@
 using NaughtyAttributes;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace MatchThree
@@ -20,6 +17,8 @@ namespace MatchThree
         public Sprite iceSprites;
         [ReadOnly] 
         public Theme[] themes;
+        [ReadOnly]
+        public SpecialTileTypeAsset[] specialTileTypeAssets;
         [ReadOnly]
         public UserData userData;
         public static int Coin

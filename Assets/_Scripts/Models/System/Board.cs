@@ -6,8 +6,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
+using static UnityEditor.Progress;
 using Random = UnityEngine.Random;
 
 namespace MatchThree
@@ -73,35 +75,36 @@ namespace MatchThree
             return tiles;
         }
 
-        private Tile[] GetHorizontalTiles(IList<TileData> tileData)
+        private Tile[] GetHorizontalTiles(TileData tileData)
         {
             var width = rows.Max(row => row.tiles.Length);
             var tiles = new List<Tile>();
-            for (var i = 0; i < tileData.Count; i++)
-            {
+
                 for (var j = 0; j < width; j++)
                 {
-                    var tile = GetTile(tileData[i].X, j);
+                    var tile = GetTile(tileData.X, j);
                     if (!tiles.Contains(tile))
                     {
                         tiles.Add(tile);
                     }
                 }
-            }
-                
-
+            
             return tiles.ToArray();
         }
 
         private Tile[] GetVerticalTiles(TileData tileData)
         {
             var height = rows.Length;
-            var tiles = new Tile[height];
-
-            for (var i = 0; i < height; i++)
-                tiles[i] = GetTile(i, tileData.Y);
-
-            return tiles;
+            var tiles = new List<Tile>();
+                for (var j = 0; j < height; j++)
+                {
+                    var tile = GetTile(j, tileData.Y);
+                    if (!tiles.Contains(tile))
+                    {
+                        tiles.Add(tile);
+                    }
+                }
+            return tiles.ToArray();
         }
 
 
@@ -239,15 +242,19 @@ namespace MatchThree
             return Sequence.Play().AsyncWaitForCompletion().AsUniTask();
         }
 
-        private UniTask InflateSequence(Tile[] tiles)
+        private UniTask InflateSequence(Tile[] tiles, TileTypeAsset tileType, SpecialTileTypeAsset specialTile)
         {
+            tiles = SpecialTileHandle(tiles.ToList<Tile>());
             var Sequence = DOTween.Sequence();
             for (int i = 0; i < tiles.Length; i++)
             {
                 for (int x = tiles[i].x; x >= 0; x--)
                 {
                     if (x > 0)
-                        GetTile(x,tiles[i].y).Type = GetTile(x - 1, tiles[i].y ).Type;
+                    {
+                        GetTile(x, tiles[i].y).Type = GetTile(x - 1, tiles[i].y).Type;
+                        GetTile(x, tiles[i].y).SpecialType = GetTile(x - 1, tiles[i].y).SpecialType;
+                    }
                     if (x == 0)
                         GetTile(x, tiles[i].y).Type = tileTypes[Random.Range(0, tileTypes.Length)];
                 }
@@ -315,35 +322,17 @@ namespace MatchThree
 
                 var tiles = GetTiles(match.Tiles);
 
-                foreach (var item in tiles)
-                {
-                    if (item.SpecialType != null)
-                    {
-                        switch (item.SpecialType.specialType)
-                        {
-                            case ESpecialType.Horizontal:
-
-                                break;
-                            case ESpecialType.Vertical:
-
-                                break;
-                            case ESpecialType.Boom:
-
-                                break;
-                            case ESpecialType.Lightning:
-
-                                break;
-                        }
-                    }
-                }
-
                 await UniTask.WhenAll(DeflateSequence(tiles));
 
                 AudioManager.Instance.sfx.PlayOneShot(AudioManager.Instance.matchSound);
-                
-                await UniTask.WhenAll(InflateSequence(tiles));
 
-                GameManager.Matching(Array.Find(tileTypes, tileType => tileType.id == match.TypeId), match.Tiles.Length);
+                var tileType = Array.Find(tileTypes, tileType => tileType.id == match.TypeId);
+
+                SpecialTileTypeAsset specialTile = ClassifyTile(match);
+                
+                GameManager.Matching(tileType, match.Tiles.Length);
+                
+                await UniTask.WhenAll(InflateSequence(tiles, tileType, specialTile));
 
                 match = TileDataMatrixUtility.FindBestMatch(Matrix);
             }
@@ -362,6 +351,66 @@ namespace MatchThree
                     tile.Type = tileTypes[Random.Range(0, tileTypes.Length)];
 
             isShuffling = false;
+        }
+
+
+        private SpecialTileTypeAsset ClassifyTile(Match match)
+        {
+            if(match.horizontalTiles.Length == 3)
+            {
+                return DataManager.Instance.specialTileTypeAssets[0];
+            }
+            if (match.verticalTiles.Length == 3)
+            {
+                return DataManager.Instance.specialTileTypeAssets[1];
+            }
+            if (match.horizontalTiles.Length == 2 && match.verticalTiles.Length == 2)
+            {
+                return DataManager.Instance.specialTileTypeAssets[2];
+            }
+            if (match.horizontalTiles.Length == 4 || match.verticalTiles.Length == 4)
+            {
+                return DataManager.Instance.specialTileTypeAssets[3];
+            }
+            return null;
+        }
+
+        private Tile[] SpecialTileHandle(List<Tile> tiles)
+        {
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                if (tiles[i].SpecialType != null)
+                {
+                    switch (tiles[i].SpecialType.specialType)
+                    {
+                        case ESpecialType.Horizontal:
+                            foreach (var temp in GetHorizontalTiles(tiles[i].Data))
+                            {
+                                if (!tiles.Contains(temp))
+                                {
+                                    tiles.Add(temp);
+                                }
+                            }
+                            break;
+                        case ESpecialType.Vertical:
+                            foreach (var temp in GetVerticalTiles(tiles[i].Data))
+                            {
+                                if (!tiles.Contains(temp))
+                                {
+                                    tiles.Add(temp);
+                                }
+                            }
+                            break;
+                        case ESpecialType.Boom:
+
+                            break;
+                        case ESpecialType.Potion:
+
+                            break;
+                    }
+                }
+            }
+            return tiles.ToArray();
         }
     }
 }

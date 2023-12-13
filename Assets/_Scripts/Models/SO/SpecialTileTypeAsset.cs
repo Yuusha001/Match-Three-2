@@ -14,6 +14,6 @@ namespace MatchThree
 
     public enum ESpecialType
     {
-        None = 0, Horizontal = 1, Vertical = 2, Boom = 3, Lightning = 4
+        None = 0, Horizontal = 1, Vertical = 2, Boom = 3, Potion = 4
     }
 }

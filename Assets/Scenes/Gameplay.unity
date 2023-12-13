@@ -1771,6 +1771,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 616d320de5a09e94ebb9b9931ae6d398, type: 2}
   - {fileID: 11400000, guid: b9c9ab0fe5556ce4fa99a9ffbe9836d9, type: 2}
   - {fileID: 11400000, guid: 9fcda89f4b48f864eac2eb3f62053e3b, type: 2}
+  specialTileTypeAssets:
+  - {fileID: 11400000, guid: 9a2dde7003fb27341a8d0053fe365e41, type: 2}
+  - {fileID: 11400000, guid: 8cfad52a1079fb54ebba4419c0e74022, type: 2}
+  - {fileID: 11400000, guid: 2fe4a77892e2bf14ebb26bdb45b2318f, type: 2}
+  - {fileID: 11400000, guid: f0446c573925e1e4c81b91a3e7080e2c, type: 2}
   userData:
     userLevelDatas: []
 --- !u!1 &2117944420

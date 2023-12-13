@@ -44,6 +44,7 @@ namespace MatchThree
 
                 _specialType = value;
                 specialIcon.sprite = (_specialType != null) ? _specialType.sprite:null;
+                specialIcon.enabled = (SpecialType != null);
             }
         }
 
@@ -61,6 +62,7 @@ namespace MatchThree
             _board = board;
             x = _x;
             y = _y;
+            SpecialType = null;
             this.GetComponent<Image>().sprite = DataManager.Instance.boardSprites[(x + y) % 2 == 0 ? 0 : 1];
             Type = tileTypes[Random.Range(0, tileTypes.Length)];
             specialIcon.enabled = (SpecialType != null);
@@ -101,18 +103,6 @@ namespace MatchThree
 
                 }
             }
-        }
-
-        public void SetSpecialType(SpecialTileTypeAsset specialTileTypeAsset)
-        {
-            SpecialType = specialTileTypeAsset;
-            specialIcon.enabled = (SpecialType != null);
-        }
-
-        public void DespecializedType()
-        {
-            SpecialType = null;
-            specialIcon.enabled = (SpecialType != null);
         }
 
         public Tween deflate( float tweenDuration)

@@ -29,7 +29,7 @@ namespace MatchThree
 
                 if (other.TypeId != origin.TypeId) break;
 
-                horizontalConnections.Add(other);
+                verticalConnections.Add(other);
             }
 
             for (var x = originX + 1; x < width; x++)
@@ -38,7 +38,8 @@ namespace MatchThree
 
                 if (other.TypeId != origin.TypeId) break;
 
-                horizontalConnections.Add(other);
+                
+                    verticalConnections.Add(other);
             }
 
             for (var y = originY - 1; y >= 0; y--)
@@ -47,7 +48,8 @@ namespace MatchThree
 
                 if (other.TypeId != origin.TypeId) break;
 
-                verticalConnections.Add(other);
+                
+                    horizontalConnections.Add(other);
             }
 
             for (var y = originY + 1; y < height; y++)
@@ -56,7 +58,7 @@ namespace MatchThree
 
                 if (other.TypeId != origin.TypeId) break;
 
-                verticalConnections.Add(other);
+                    horizontalConnections.Add(other);
             }
 
             return (horizontalConnections.ToArray(), verticalConnections.ToArray());
