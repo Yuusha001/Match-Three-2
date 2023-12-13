@@ -12,9 +12,82 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ab3156411ae094fa0a50c6232bd87d, type: 3}
   m_Name: Level 0
   m_EditorClassIdentifier: 
-  mapData:
-    numberOfRows: 6
-    numberOfCols: 6
+  numberOfRows: 6
+  numberOfCols: 6
+  squareType: 1
+  Data:
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
+  - block: 1
+    obstacle: 0
   numberOfMoves: 7
   starsRequiredPoints: e8030000b0040000dc050000
   tileTypes:

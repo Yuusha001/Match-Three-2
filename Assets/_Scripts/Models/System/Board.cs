@@ -126,11 +126,11 @@ namespace MatchThree
 
             //Setup Board
             tileTypes = levelDifficulty.tileTypes;
-            rows = new Row[levelDifficulty.mapData.numberOfRows];
-            for (int x = 0; x < levelDifficulty.mapData.numberOfCols; x++)
+            rows = new Row[levelDifficulty.numberOfRows];
+            for (int x = 0; x < levelDifficulty.numberOfCols; x++)
             {
                 var row = FactoryObject.Spawn<Row>(StringManager.BoardPool, StringManager.RowPrefab, holder);
-                row.Initialize(this, levelDifficulty.mapData.numberOfCols, x, tileTypes);
+                row.Initialize(this, levelDifficulty.numberOfCols, x, tileTypes);
                 rows[x] = row;
             }
             swappingOverlay.SetAsLastSibling();

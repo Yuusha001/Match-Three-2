@@ -15,6 +15,8 @@ namespace MatchThree
         public Sprite[] rockSprites;
         [ReadOnly]
         public Sprite iceSprites;
+        [ReadOnly]
+        public Sprite thrivingSprites;
         [ReadOnly] 
         public Theme[] themes;
         [ReadOnly]

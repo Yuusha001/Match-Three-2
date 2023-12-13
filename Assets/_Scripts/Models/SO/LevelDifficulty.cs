@@ -9,7 +9,13 @@ namespace MatchThree
     [System.Serializable]
     public class LevelDifficulty : ScriptableObject
     {
-        public MapData mapData;
+        [Header("Level Difficulty")]
+        [Range(6, 8)]
+        public int numberOfRows = 6;
+        [Range(6, 8)]
+        public int numberOfCols = 6;
+        public EMapType squareType;
+        public SquareBlocks[] Data;
 
         [HorizontalLine(color: EColor.Red)]
         [Space]
@@ -28,28 +34,32 @@ namespace MatchThree
         {
             tileTypes = Resources.LoadAll<TileTypeAsset>("_SO/TileTypes");
         }
+
         private void OnValidate()
         {
-            mapData.InitializeMapData();
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            Data = new SquareBlocks[numberOfCols * numberOfRows];
+            for (int i = 0; i < Data.Length; i++)
+            {
+                SquareBlocks sqBlocks = new SquareBlocks();
+                sqBlocks.block = EMapType.Empty;
+                sqBlocks.obstacle = EMapType.Normal;
+                Data[i] = sqBlocks;
+            }
         }
     }
 
     [System.Serializable]
-    public class MapData
+    public class SquareBlocks
     {
-        [Header("Level Difficulty")]
-        [Range(6, 8)]
-        public int numberOfRows = 6;
-        [Range(6, 8)]
-        public int numberOfCols = 6;
-        public EMapType[,] Data;
-        public void InitializeMapData()
-        {
-            Data = new EMapType[numberOfRows, numberOfCols];
-        }
-        
-    }
+        public EMapType block;
+        public EMapType obstacle;
 
+    }
 
     [System.Serializable]
     public struct CollectType
@@ -65,7 +75,7 @@ namespace MatchThree
     }
     public enum EMapType
     {
-        Normal = 0, Empty = 1, Block_1 = 2, Block_2 = 3, Rock_1 = 4, Rock_2= 5, Frozen = 6
+        Normal = 0, Empty = 1, Block_1 = 2, Block_2 = 3, Rock_1 = 4, Rock_2= 5, Frozen = 6, Thriving = 7
     }
 }
 
