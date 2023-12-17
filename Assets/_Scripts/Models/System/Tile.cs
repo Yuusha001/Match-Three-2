@@ -173,23 +173,28 @@ namespace MatchThree
             }
         }
 
-        private void RemoveObstacle()
+        private void RemoveObstacle(bool isRock = false)
         {
             switch (squareBlock.obstacle)
             {
                 case EMapType.Block_1:
+                    if (isRock) return;
                     squareBlock.obstacle = EMapType.Normal;
                     ObstacleInitialize();
                     break;
                 case EMapType.Block_2:
+                    if (isRock) return;
                     squareBlock.obstacle = EMapType.Block_1;
                     ObstacleInitialize();
                     break;
                 case EMapType.Rock_1:
                     squareBlock.obstacle = EMapType.Normal;
+                    icon.enabled = true;
                     ObstacleInitialize();
+                    GetRandomTile();
                     break;
                 case EMapType.Frozen:
+                    if (isRock) return;
                     squareBlock.obstacle = EMapType.Normal;
                     ObstacleInitialize();
                     break;
@@ -272,6 +277,10 @@ namespace MatchThree
                 if (squareBlock.obstacle == EMapType.Normal)
                 {
                     vfx.Play();
+                    GetNeighborTop().RemoveObstacle(true);
+                    GetNeighborBot().RemoveObstacle(true);
+                    GetNeighborLeft().RemoveObstacle(true);
+                    GetNeighborRight().RemoveObstacle(true);
                 }
                 else
                 {
