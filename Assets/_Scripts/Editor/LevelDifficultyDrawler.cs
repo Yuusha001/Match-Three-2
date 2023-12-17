@@ -46,7 +46,12 @@ namespace MatchThree
 
             GUILayout.Label("Tools:", EditorStyles.boldLabel);
             GUILayout.BeginHorizontal();
-            GUILayout.Space(30);
+            GUILayout.Space(10);
+            if (GUILayout.Button("Initialize", new GUILayoutOption[] { GUILayout.Width(70), GUILayout.Height(50) }))
+            {
+                instance.Initialize();
+            }
+            GUILayout.Space(10);
             if (GUILayout.Button("Clear", new GUILayoutOption[] { GUILayout.Width(50), GUILayout.Height(50) }))
             {
                 for (int i = 0; i < instance.Data.Length; i++)
@@ -54,6 +59,11 @@ namespace MatchThree
                     instance.Data[i].block = EMapType.Empty;
                     instance.Data[i].obstacle = EMapType.Normal;
                 }
+            }
+            GUILayout.Space(10);
+            if (GUILayout.Button("Get all tiles", new GUILayoutOption[] { GUILayout.Width(90), GUILayout.Height(50) }))
+            {
+                instance.GetAllTiles();
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -202,57 +212,17 @@ namespace MatchThree
                             imageButton = thrivingBlockTex;
                             squareColor = Color.white;
                         }
+                        else if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Block_1)
+                        {
+                            imageButton = blockTex;
+                            squareColor = Color.white;
+                        }
+                        else if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Block_2)
+                        {
+                            imageButton = blockTex2;
+                            squareColor = Color.white;
+                        }
 
-                    }
-                    else if (instance.Data[row * instance.numberOfCols + col].block == EMapType.Block_1)
-                    {
-                        imageButton = blockTex;
-                        if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Frozen)
-                        {
-                            imageButton = wireBlockTex;
-                            squareColor = Color.white;
-                        }
-                        else if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Rock_1)
-                        {
-                            imageButton = solidBlockTex;
-                            squareColor = Color.white;
-                        }
-                        else if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Rock_2)
-                        {
-                            imageButton = undestroyableBlockTex;
-                            squareColor = Color.white;
-                        }
-                        else if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Thriving)
-                        {
-                            imageButton = thrivingBlockTex;
-                            squareColor = Color.white;
-                        }
-                        //     squareColor = new Color(0.8f, 1, 1, 1f);
-                    }
-                    else if (instance.Data[row * instance.numberOfCols + col].block == EMapType.Block_2)
-                    {
-                        imageButton = blockTex2;
-                        if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Frozen)
-                        {
-                            imageButton = wireBlockTex;
-                            squareColor = Color.white;
-                        }
-                        else if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Rock_1)
-                        {
-                            imageButton = solidBlockTex;
-                            squareColor = Color.white;
-                        }
-                        else if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Rock_2)
-                        {
-                            imageButton = undestroyableBlockTex;
-                            squareColor = Color.white;
-                        }
-                        else if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Thriving)
-                        {
-                            imageButton = thrivingBlockTex;
-                            squareColor = Color.white;
-                        }
-                        // squareColor = new Color(0.3f, 1, 1, 1f);
                     }
                     GUI.color = squareColor;
                     if (GUILayout.Button(imageButton as Texture, new GUILayoutOption[] {
@@ -272,13 +242,15 @@ namespace MatchThree
         {
             if (instance.squareType == EMapType.Block_1)
             {
-                if (instance.Data[row * instance.numberOfCols + col].block == EMapType.Block_1)
-                    instance.Data[row * instance.numberOfCols + col].block = EMapType.Block_2;
+                if (instance.Data[row * instance.numberOfCols + col].obstacle == EMapType.Block_1)
+                    instance.Data[row * instance.numberOfCols + col].obstacle = EMapType.Block_2;
                 else
-                    instance.Data[row * instance.numberOfCols + col].block = EMapType.Block_1;
+                    instance.Data[row * instance.numberOfCols + col].obstacle = EMapType.Block_1;
             }
             else if (instance.squareType == EMapType.Frozen || instance.squareType == EMapType.Rock_1 || instance.squareType == EMapType.Rock_2 || instance.squareType == EMapType.Thriving)
+            {
                 instance.Data[row * instance.numberOfCols + col].obstacle = instance.squareType;
+            }
             else
             {
                 instance.Data[row * instance.numberOfCols + col].block = instance.squareType;

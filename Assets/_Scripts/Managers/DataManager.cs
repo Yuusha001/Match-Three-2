@@ -8,8 +8,6 @@ namespace MatchThree
         [ReadOnly]
         public Sprite[] boardSprites;
         [ReadOnly]
-        public Sprite[] borderSprites;
-        [ReadOnly]
         public Sprite[] blockSprites;
         [ReadOnly]
         public Sprite[] rockSprites;

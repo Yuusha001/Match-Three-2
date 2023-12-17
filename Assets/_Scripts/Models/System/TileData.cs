@@ -10,7 +10,6 @@ namespace MatchThree
         {
             X = x;
             Y = y;
-
             TypeId = typeId;
         }
     }

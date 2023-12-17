@@ -27,7 +27,7 @@ namespace MatchThree
             {
                 var other = tiles[x, originY];
 
-                if (other.TypeId != origin.TypeId) break;
+                if (other.TypeId != origin.TypeId || other.TypeId == -1) break;
 
                 verticalConnections.Add(other);
             }
@@ -36,7 +36,7 @@ namespace MatchThree
             {
                 var other = tiles[x, originY];
 
-                if (other.TypeId != origin.TypeId) break;
+                if (other.TypeId != origin.TypeId || other.TypeId == -1) break;
 
                 
                     verticalConnections.Add(other);
@@ -46,7 +46,7 @@ namespace MatchThree
             {
                 var other = tiles[originX, y];
 
-                if (other.TypeId != origin.TypeId) break;
+                if (other.TypeId != origin.TypeId || other.TypeId == -1) break;
 
                 
                     horizontalConnections.Add(other);
@@ -56,7 +56,7 @@ namespace MatchThree
             {
                 var other = tiles[originX, y];
 
-                if (other.TypeId != origin.TypeId) break;
+                if (other.TypeId != origin.TypeId || other.TypeId == -1) break;
 
                     horizontalConnections.Add(other);
             }

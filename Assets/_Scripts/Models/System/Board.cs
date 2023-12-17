@@ -26,8 +26,7 @@ namespace MatchThree
         [ReadOnly]
         public Row[] rows;
         [ReadOnly]
-        [SerializeField]
-        private TileTypeAsset[] tileTypes;
+        public TileTypeAsset[] tileTypes;
         [ReadOnly]
         [SerializeField]
         private Transform swappingOverlay;
@@ -61,7 +60,7 @@ namespace MatchThree
             }
         }
 
-        private Tile GetTile(int x, int y)
+        public Tile GetTile(int x, int y)
         {
             return rows[x].tiles[y];
         }
@@ -74,7 +73,6 @@ namespace MatchThree
 
             return tiles;
         }
-
         private Tile[] GetHorizontalTiles(TileData tileData)
         {
             var width = rows.Max(row => row.tiles.Length);
@@ -91,7 +89,6 @@ namespace MatchThree
             
             return tiles.ToArray();
         }
-
         private Tile[] GetVerticalTiles(TileData tileData)
         {
             var height = rows.Length;
@@ -130,11 +127,15 @@ namespace MatchThree
             for (int x = 0; x < levelDifficulty.numberOfCols; x++)
             {
                 var row = FactoryObject.Spawn<Row>(StringManager.BoardPool, StringManager.RowPrefab, holder);
-                row.Initialize(this, levelDifficulty.numberOfCols, x, tileTypes);
+                row.Initialize(this, levelDifficulty.numberOfCols, x, levelDifficulty.Data);
                 rows[x] = row;
             }
             swappingOverlay.SetAsLastSibling();
             characterGoal.Initialize(levelDifficulty);
+            foreach (var item in rows)
+            {
+                item.BorderInitialize();
+            }
         }
 
         [Button("Clear")]
@@ -159,6 +160,7 @@ namespace MatchThree
             {
                 case SwipeDir.Left:
                      tile2 = GetTile(tile.x , tile.y - 1);
+                    if (!tile2.CanSwap()) return;
                     _selection.Add(tile);
                     _selection.Add(tile2);
                     await MoveAsync(tile, tile2);
@@ -166,6 +168,7 @@ namespace MatchThree
                     break;
                 case SwipeDir.Right:
                      tile2 = GetTile(tile.x , tile.y + 1);
+                    if (!tile2.CanSwap()) return;
                     _selection.Add(tile);
                     _selection.Add(tile2);
                     await MoveAsync(tile, tile2);
@@ -173,6 +176,7 @@ namespace MatchThree
                     break;
                 case SwipeDir.Up:
                     tile2 = GetTile(tile.x - 1, tile.y);
+                    if (!tile2.CanSwap()) return;
                     _selection.Add(tile);
                     _selection.Add(tile2);
                     await MoveAsync(tile, tile2);
@@ -180,6 +184,7 @@ namespace MatchThree
                     break;
                 case SwipeDir.Down:
                     tile2 = GetTile(tile.x + 1, tile.y );
+                    if (!tile2.CanSwap()) return;
                     _selection.Add(tile);
                     _selection.Add(tile2);
                     await MoveAsync(tile, tile2);
@@ -252,12 +257,21 @@ namespace MatchThree
                 {
                     if (x > 0)
                     {
-                        GetTile(x, tiles[i].y).Type = GetTile(x - 1, tiles[i].y).Type;
-                        GetTile(x, tiles[i].y).SpecialType = GetTile(x - 1, tiles[i].y).SpecialType;
+                        if(GetTile(x - 1, tiles[i].y).CanChange())
+                        {
+                            GetTile(x, tiles[i].y).Type = GetTile(x - 1, tiles[i].y).Type;
+                            GetTile(x, tiles[i].y).SpecialType = GetTile(x - 1, tiles[i].y).SpecialType;
+                        }
+                        else
+                        {
+                            GetTile(x, tiles[i].y).GetRandomTile();
+                        }
+                       
                     }
-                    if (x == 0)
-                        GetTile(x, tiles[i].y).Type = tileTypes[Random.Range(0, tileTypes.Length)];
+                    if (x == 0 && GetTile(x, tiles[i].y).CanChange())
+                        GetTile(x, tiles[i].y).GetRandomTile();
                 }
+                if (tiles[i].CanChange())
                 Sequence.Join(tiles[i].inflate(tweenDuration));
             }
             return Sequence.Play().AsyncWaitForCompletion().AsUniTask();

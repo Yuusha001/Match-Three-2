@@ -1,6 +1,4 @@
 using NaughtyAttributes;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace MatchThree
@@ -10,11 +8,12 @@ namespace MatchThree
     public class LevelDifficulty : ScriptableObject
     {
         [Header("Level Difficulty")]
-        [Range(6, 8)]
+        [Range(6, 9)]
         public int numberOfRows = 6;
-        [Range(6, 8)]
+        [Range(6, 9)]
         public int numberOfCols = 6;
         public EMapType squareType;
+        [HideInInspector]
         public SquareBlocks[] Data;
 
         [HorizontalLine(color: EColor.Red)]
@@ -28,37 +27,32 @@ namespace MatchThree
         [HorizontalLine(color: EColor.Green)]
         [ShowIf("gameType", EGameType.Collect)]
         public CollectType[] collectTypes;
-
-        [Button("Get All Tiles")]
-        private void GetAllTiles()
+        public void GetAllTiles()
         {
             tileTypes = Resources.LoadAll<TileTypeAsset>("_SO/TileTypes");
         }
 
-        private void OnValidate()
-        {
-            Initialize();
-        }
-
-        private void Initialize()
+        public void Initialize()
         {
             Data = new SquareBlocks[numberOfCols * numberOfRows];
             for (int i = 0; i < Data.Length; i++)
             {
-                SquareBlocks sqBlocks = new SquareBlocks();
-                sqBlocks.block = EMapType.Empty;
-                sqBlocks.obstacle = EMapType.Normal;
-                Data[i] = sqBlocks;
+                Data[i] = new SquareBlocks();
+                Data[i].Initialize();
             }
         }
     }
-
     [System.Serializable]
-    public class SquareBlocks
+    public struct SquareBlocks
     {
         public EMapType block;
         public EMapType obstacle;
 
+        public void Initialize()
+        {
+            this.block = EMapType.Empty;
+            this.obstacle = EMapType.Normal;
+        }
     }
 
     [System.Serializable]
@@ -66,7 +60,6 @@ namespace MatchThree
     {
         public int numberOfCollects;
         public TileTypeAsset tileType;
-
     }
 
     public enum EGameType
