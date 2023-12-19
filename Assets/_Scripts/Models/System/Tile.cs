@@ -267,7 +267,7 @@ namespace MatchThree
             }
         }
 
-        public Tween deflate( float tweenDuration)
+        public Tween deflate(float tweenDuration)
         {
             var vfx = FactoryObject.Spawn<ParticleSystem>(StringManager.VFXPool, StringManager.DestroyPrefab, this.transform);
             vfx.transform.localScale = new Vector3(25,25,25);

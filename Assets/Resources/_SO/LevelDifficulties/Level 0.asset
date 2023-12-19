@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0ab3156411ae094fa0a50c6232bd87d, type: 3}
   m_Name: Level 0
   m_EditorClassIdentifier: 
-  numberOfRows: 7
-  numberOfCols: 7
-  squareType: 4
+  numberOfRows: 6
+  numberOfCols: 6
+  squareType: 0
   Data:
   - block: 0
     obstacle: 0
@@ -26,8 +26,6 @@ MonoBehaviour:
     obstacle: 0
   - block: 1
     obstacle: 0
-  - block: 1
-    obstacle: 0
   - block: 0
     obstacle: 0
   - block: 1
@@ -65,28 +63,6 @@ MonoBehaviour:
   - block: 1
     obstacle: 0
   - block: 1
-    obstacle: 4
-  - block: 1
-    obstacle: 0
-  - block: 1
-    obstacle: 0
-  - block: 1
-    obstacle: 0
-  - block: 1
-    obstacle: 0
-  - block: 1
-    obstacle: 0
-  - block: 1
-    obstacle: 0
-  - block: 1
-    obstacle: 0
-  - block: 1
-    obstacle: 0
-  - block: 1
-    obstacle: 0
-  - block: 1
-    obstacle: 0
-  - block: 1
     obstacle: 0
   - block: 1
     obstacle: 0
@@ -101,8 +77,6 @@ MonoBehaviour:
   - block: 1
     obstacle: 0
   - block: 0
-    obstacle: 0
-  - block: 1
     obstacle: 0
   - block: 1
     obstacle: 0

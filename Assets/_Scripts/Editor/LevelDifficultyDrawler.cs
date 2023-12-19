@@ -47,11 +47,6 @@ namespace MatchThree
             GUILayout.Label("Tools:", EditorStyles.boldLabel);
             GUILayout.BeginHorizontal();
             GUILayout.Space(10);
-            if (GUILayout.Button("Initialize", new GUILayoutOption[] { GUILayout.Width(70), GUILayout.Height(50) }))
-            {
-                instance.Initialize();
-            }
-            GUILayout.Space(10);
             if (GUILayout.Button("Clear", new GUILayoutOption[] { GUILayout.Width(50), GUILayout.Height(50) }))
             {
                 for (int i = 0; i < instance.Data.Length; i++)
@@ -170,7 +165,6 @@ namespace MatchThree
             GUILayout.EndHorizontal();
 
         }
-
         void GUIGameField()
         {
             GUILayout.BeginVertical();

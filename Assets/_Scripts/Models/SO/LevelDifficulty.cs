@@ -9,8 +9,10 @@ namespace MatchThree
     {
         [Header("Level Difficulty")]
         [Range(6, 9)]
+        [OnValueChanged("Initialize")]
         public int numberOfRows = 6;
         [Range(6, 9)]
+        [OnValueChanged("Initialize")]
         public int numberOfCols = 6;
         public EMapType squareType;
         [HideInInspector]
@@ -31,7 +33,6 @@ namespace MatchThree
         {
             tileTypes = Resources.LoadAll<TileTypeAsset>("_SO/TileTypes");
         }
-
         public void Initialize()
         {
             Data = new SquareBlocks[numberOfCols * numberOfRows];

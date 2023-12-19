@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
@@ -247,9 +248,11 @@ namespace MatchThree
             return Sequence.Play().AsyncWaitForCompletion().AsUniTask();
         }
 
-        private UniTask InflateSequence(Tile[] tiles, TileTypeAsset tileType, SpecialTileTypeAsset specialTile)
+        private UniTask InflateSequence(Match match, TileTypeAsset tileType)
         {
-            tiles = SpecialTileHandle(tiles.ToList<Tile>());
+            SpecialTileTypeAsset specialTile = ClassifyTile(match);
+            var tiles = GetTiles(match.Tiles);
+
             var Sequence = DOTween.Sequence();
             for (int i = 0; i < tiles.Length; i++)
             {
@@ -342,11 +345,9 @@ namespace MatchThree
 
                 var tileType = Array.Find(tileTypes, tileType => tileType.id == match.TypeId);
 
-                SpecialTileTypeAsset specialTile = ClassifyTile(match);
-                
                 GameManager.Matching(tileType, match.Tiles.Length);
                 
-                await UniTask.WhenAll(InflateSequence(tiles, tileType, specialTile));
+                await UniTask.WhenAll(InflateSequence(match, tileType));
 
                 match = TileDataMatrixUtility.FindBestMatch(Matrix);
             }
